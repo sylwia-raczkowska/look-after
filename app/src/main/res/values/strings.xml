@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">LookAfter</string>
+    <string-array name="options">
+        <item>Czytanie</item>
+        <item>Zabawa</item>
+        <item>Kołysanki</item>
+    </string-array>
+    <string name="title_activity_read_category">ReadCategoryActivity</string>
+    <string name="title_activity_genre_actiity">GenreActiity</string>
+</resources>
