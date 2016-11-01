@@ -1,0 +1,44 @@
+package com.hfad.lookafter;
+
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+
+/**
+ * Created by Niki on 2016-10-31.
+ */
+
+class DatabaseHelper extends SQLiteOpenHelper{
+    private static final String DATABASE_NAME = "BOOKS";
+    private static final int DATABASE_VERSION = 1;
+
+    DatabaseHelper(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        db.execSQL("CREATE TABLE BOOKS (_id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + "AUTHOR TEXT, "
+                + "TITLE TEXT, "
+                + "COVER_RESOURCE_ID INTEGER, "
+                + "FAVOURITE INTEGER);");
+        insertBook(db, "Jan Brzechwa", "\"Na straganie\"", R.drawable.na_straganie);
+        insertBook(db, "Bracia Grimm", "\"Kopciuszek\"", R.drawable.kopciuszek);
+
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
+    }
+
+    private static void insertBook (SQLiteDatabase db, String author, String title, int coverResourceId){
+        ContentValues bookValues = new ContentValues();
+        bookValues.put("AUTHOR", author);
+        bookValues.put("TITLE", title);
+        bookValues.put("COVER_RESOURCE_ID", coverResourceId);
+        db.insert("BOOKS", null, bookValues);
+    }
+}

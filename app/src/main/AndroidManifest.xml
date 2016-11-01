@@ -8,21 +8,29 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".TopLevelActivity">
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".ReadCategoryActivity"
-            android:label="@string/title_activity_read_category"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".BooksActivity"
+            android:label="@string/title_activity_books_activity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".MainActivity"/>
         <activity
-            android:name=".GenreActivity"
-            android:label="@string/title_activity_genre_actiity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:name=".FavouriteListActivity"
+            android:label="@string/favourite_list"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".MainActivity"/>
+        <activity
+            android:name=".NotificationActivity"
+            android:label="@string/title_activity_notification"
+            android:parentActivityName=".MainActivity">
+        </activity>
     </application>
 
 </manifest>

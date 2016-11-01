@@ -1,10 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">LookAfter</string>
     <string-array name="options">
+        <item>Ekran główny</item>
         <item>Czytanie</item>
+        <item>Piosenki</item>
         <item>Zabawa</item>
-        <item>Kołysanki</item>
+    </string-array>
+    <string-array name="read_category">
+        <item>Baśnie</item>
+        <item>Legendy</item>
+        <item>Opowiadania</item>
+        <item>Wiersze</item>
     </string-array>
     <string name="title_activity_read_category">ReadCategoryActivity</string>
-    <string name="title_activity_genre_actiity">GenreActiity</string>
+    <string name="title_activity_books_activity">Czytanka</string>
+    <string name="action_create_notification">Przypomnienie</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_notification">Ustal przypomnienie</string>
+    <string name="title_top">Fragment TopFragment</string>
+    <string name="open_drawer">Otwórz</string>
+    <string name="close_drawer">Zamknij</string>
+    <string name="action_favourite">Dodaj do ulubionych</string>
+    <string name="action_favourite_added">Dodano do ulubionych</string>
+    <string name="action_favourite_deleted">Usunięto z ulubionych</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="database_error">Baza danych jest niedostępna</string>
+    <string name="favourite_list">Ulubione książki</string>
 </resources>
