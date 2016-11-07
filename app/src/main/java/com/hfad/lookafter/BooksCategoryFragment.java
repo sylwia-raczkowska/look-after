@@ -1,7 +1,5 @@
 package com.hfad.lookafter;
 
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.app.ListFragment;
 import android.content.Context;
 import android.content.Intent;
@@ -10,7 +8,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -41,10 +38,10 @@ public class BooksCategoryFragment extends ListFragment {
         try{
             SQLiteOpenHelper DatabaseHelper = new DatabaseHelper(context);
             database = DatabaseHelper.getReadableDatabase();
-            cursor = database.query("BOOKS", new String[]{"_id", "AUTHOR", "TITLE"}, null, null, null, null, null);
+            cursor = database.query("BOOKS", new String[]{"_id", "COVER_RESOURCE_ID", "AUTHOR", "TITLE"}, null, null, null, null, null);
             //TODO: wyswietlic tytul i zdjecie
-            CursorAdapter adapter = new SimpleCursorAdapter(context, android.R.layout.simple_list_item_1,
-                    cursor, new String[]{"AUTHOR", "TITLE"}, new int[]{android.R.id.text1, android.R.id.text2}, 0);
+            CursorAdapter adapter = new SimpleCursorAdapter(context, R.layout.activity_list_entry,
+                    cursor, new String[]{"COVER_RESOURCE_ID", "AUTHOR", "TITLE"}, new int[]{R.id.pic, R.id.author_entry, R.id.title_entry}, 0);
             setListAdapter(adapter);
         }catch (SQLiteException e){
             showPrompt();
@@ -56,6 +53,7 @@ public class BooksCategoryFragment extends ListFragment {
         Intent intent = new Intent(getActivity(), BooksActivity.class);
         intent.putExtra(BooksActivity.EXTRA_BOOKN0, (int)id);
         startActivity(intent);
+        // todo: powrot do bookscategory nie do mainaactivity
 
     }
 

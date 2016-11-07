@@ -4,6 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageView
+        android:id="@+id/pic"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="10dp"
+        android:layout_gravity="center_vertical">
+    </ImageView>
+
     <TextView
         android:id="@+id/author_entry"
         android:layout_width="wrap_content"
@@ -11,7 +19,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:paddingBottom="10dp"
         android:paddingTop="10dp"
-        android:paddingStart="10dp"
+        android:paddingStart="@dimen/padding_start"
         android:textColor="#000000"/>
     <TextView
         android:id="@+id/title_entry"
@@ -19,7 +27,7 @@
         android:layout_height="wrap_content"
         android:paddingBottom="10dp"
         android:paddingTop="10dp"
-        android:paddingStart="10dp"
+        android:paddingStart="@dimen/padding_start"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#000000"/>
 </LinearLayout>

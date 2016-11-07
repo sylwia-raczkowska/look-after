@@ -5,14 +5,23 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
+import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 public class MainActivity extends Activity {
@@ -76,6 +85,7 @@ public class MainActivity extends Activity {
                 startActivity(intent);
                 return true;
             case R.id.action_settings:
+                //TODO: ustawienia
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -110,4 +120,5 @@ public class MainActivity extends Activity {
         }
         getActionBar().setTitle(title);
     }
+
 }

@@ -12,6 +12,7 @@ public class NotificationActivity extends Activity {
         setContentView(R.layout.activity_notification);
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
+        //TODO: przypomnienia
     }
 
 }

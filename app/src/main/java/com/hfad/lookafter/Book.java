@@ -20,10 +20,11 @@ public class Book {
 
     private boolean isFavourite;
 
-    Book (String author, String title, int cover_resource_id, boolean isFavourite){
+    Book (String author, String title, int cover_resource_id, int content, boolean isFavourite){
         this.author = author;
         this.title = title;
         this.cover_resource_id = cover_resource_id;
+        this.content_resource_id = content;
         this.isFavourite = isFavourite;
     }
 
