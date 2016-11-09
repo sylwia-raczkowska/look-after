@@ -5,6 +5,14 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+
 /**
  * Created by Niki on 2016-10-31.
  */
@@ -44,5 +52,36 @@ class DatabaseHelper extends SQLiteOpenHelper{
         bookValues.put("COVER_RESOURCE_ID", coverResourceId);
         bookValues.put("CONTENT_RESOURCE_ID", contentResourceId);
         db.insert("BOOKS", null, bookValues);
+    }
+
+        public void unarchive(File source, File target){
+            int BUFFER = 2048;
+            try{
+            BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(target));
+            FileInputStream fileInputStream = new FileInputStream(source);
+            ZipInputStream zipInputStream = new ZipInputStream(new BufferedInputStream(fileInputStream));
+            ZipEntry entry;
+            while ((entry = zipInputStream.getNextEntry()) != null) {
+                int count;
+                byte data[] = new byte[BUFFER];
+                if (entry.isDirectory()) {
+                    File f = new File(target.getAbsolutePath() + entry.getName());
+                    if(!f.exists()){
+                        f.mkdirs();
+                    }
+                    continue;
+                }
+                FileOutputStream fileOutputStream = new FileOutputStream(entry.getName());
+                bufferedOutputStream = new BufferedOutputStream(fileOutputStream, BUFFER);
+                while ((count = zipInputStream.read(data, 0, BUFFER)) != -1) {
+                    bufferedOutputStream.write(data, 0, count);
+                }
+                bufferedOutputStream.flush();
+                bufferedOutputStream.close();
+            }
+            zipInputStream.close();
+        }catch(Exception ex){
+                ex.printStackTrace();
+            }
     }
 }

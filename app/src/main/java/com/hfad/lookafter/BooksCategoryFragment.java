@@ -1,12 +1,14 @@
 package com.hfad.lookafter;
 
 import android.app.ListFragment;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,31 +24,58 @@ import android.widget.Toast;
 public class BooksCategoryFragment extends ListFragment {
 
     private SQLiteDatabase database;
+    private ConnectionManager connectionManager = new ConnectionManager();
     private Cursor cursor;
+    LayoutInflater inflater;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view =  super.onCreateView(inflater, container, savedInstanceState);
         setHasOptionsMenu(true);
-        creatingCursor(inflater.getContext());
+        Context context = inflater.getContext();
+        createCursor(context);
+        generateList(context);
         return view;
     }
 
-    private void creatingCursor(Context context
-    ) {
-        try{
-            SQLiteOpenHelper DatabaseHelper = new DatabaseHelper(context);
-            database = DatabaseHelper.getReadableDatabase();
-            cursor = database.query("BOOKS", new String[]{"_id", "COVER_RESOURCE_ID", "AUTHOR", "TITLE"}, null, null, null, null, null);
-            //TODO: wyswietlic tytul i zdjecie
+    private void generateList(Context context) {
+
+        try {
             CursorAdapter adapter = new SimpleCursorAdapter(context, R.layout.activity_list_entry,
                     cursor, new String[]{"COVER_RESOURCE_ID", "AUTHOR", "TITLE"}, new int[]{R.id.pic, R.id.author_entry, R.id.title_entry}, 0);
             setListAdapter(adapter);
-        }catch (SQLiteException e){
+        } catch (SQLiteException e) {
             showPrompt();
         }
     }
+
+    private void createCursor(Context context){
+        new ListGenerator().execute(context);
+    }
+
+    private class ListGenerator extends AsyncTask<Context, Boolean, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(Context... contexts) {
+            Context context = contexts[0];
+            String query = "SELECT _id, COVER_RESOURCE_ID, AUTHOR, TITLE FROM BOOKS";
+            try {
+                cursor = connectionManager.connect(context, query);
+                return true;
+            }catch (SQLiteException ex){
+                ex.printStackTrace();
+                return false;
+            }
+        }
+
+        protected void onPostExecute(Boolean success){
+            if(!success){
+                    showPrompt();
+            }
+        }
+    }
+
 
     @Override
     public void onListItemClick(ListView listView, View itemView, int position, long id) {
