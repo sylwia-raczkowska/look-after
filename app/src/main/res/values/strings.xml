@@ -4,8 +4,6 @@
     <string-array name="options">
         <item>Ekran główny</item>
         <item>Czytanie</item>
-        <item>Piosenki</item>
-        <item>Zabawa</item>
     </string-array>
     <string-array name="read_category">
         <item>Baśnie</item>

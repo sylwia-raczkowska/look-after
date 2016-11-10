@@ -2,31 +2,20 @@ package com.hfad.lookafter;
 
 import android.app.Activity;
 import android.content.ContentValues;
-import android.content.res.AssetFileDescriptor;
-import android.content.res.AssetManager;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.BoringLayout;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ViewFlipper;
-
-import org.w3c.dom.Text;
-
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -37,64 +26,40 @@ public class BooksActivity extends Activity {
     private Cursor cursor;
     private SQLiteDatabase database;
     private Book book;
+    private int bookNo;
     private Menu menu;
+    private ConnectionManager connectionManager = new ConnectionManager();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_books);
-        int bookNo = (Integer)getIntent().getExtras().get(EXTRA_BOOKN0);
-        creatingCursor(bookNo);
-        readingFromCursor();
-        readingContentFromFile();
-        displayingData();
-    }
-
-    private void creatingCursor(int bookNo) {
-        try {
-            SQLiteOpenHelper DataBaseHelper = new DatabaseHelper(this);
-            database = DataBaseHelper.getWritableDatabase();
-            cursor = database.query("BOOKS", new String[]{"AUTHOR", "TITLE", "COVER_RESOURCE_ID", "CONTENT_RESOURCE_ID", "FAVOURITE"}, "_id = ?",
-                    new String[]{Integer.toString(bookNo)}, null, null, null);
-        } catch (SQLiteException e) {
-            showPrompt();
-        }
-    }
-
-    private void readingFromCursor(){
-        if(cursor.moveToFirst()){
-            String author = cursor.getString(0);
-            String title = cursor.getString(1);
-            int cover_id = cursor.getInt(2);
-            int content = cursor.getInt(3);
-            boolean isFavourite = (cursor.getInt(4) == 1);
-            creatingBook(author, title, cover_id, content, isFavourite);
-        }
-        closing();
+        bookNo = (Integer) getIntent().getExtras().get(EXTRA_BOOKN0);
+        getBookData(getApplicationContext());
     }
 
     @Override
-    public boolean onCreateOptionsMenu (Menu menu){
+    public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         this.menu = menu;
         getMenuInflater().inflate(R.menu.menu_books, menu);
-        setActionBarTitle();
+        invalidateOptionsMenu();
         return true;
     }
 
-    private void creatingBook(String author, String title, int cover_id, int content, boolean isFavourite){
+    private void createBook(String author, String title, int cover_id, int content, boolean isFavourite) {
         book = new Book(author, title, cover_id, content, isFavourite);
     }
 
-    private void displayingData(){
-        ImageView image = (ImageView)findViewById(R.id.pic);
-        TextView title = (TextView)findViewById(R.id.title);
+    private void displayData() {
+        ImageView image = (ImageView) findViewById(R.id.pic);
+        TextView title = (TextView) findViewById(R.id.title);
         image.setImageResource(book.getCover_resource_id());
         title.setText(book.getAuthor() + ' ' + book.getTitle());
     }
 
-    private void readingContentFromFile(){
-        TextView content = (TextView)findViewById(R.id.content);
+    private void readContentFromFile() {
+        TextView content = (TextView) findViewById(R.id.content);
         BufferedReader reader = null;
         try {
             InputStream inputStream = getResources().openRawResource(book.getContent_resource_id());
@@ -117,8 +82,52 @@ public class BooksActivity extends Activity {
         }
     }
 
-    public boolean onOptionsItemSelected(MenuItem item){
-        switch(item.getItemId()){
+    private void getBookData(Context context) {
+        new BooksActivity.BookData().execute(context);
+    }
+
+    private class BookData extends AsyncTask<Context, Context, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(Context... contexts) {
+            Context context = contexts[0];
+            String query = "SELECT AUTHOR, TITLE, COVER_RESOURCE_ID, CONTENT_RESOURCE_ID, FAVOURITE FROM BOOKS WHERE _id = " + bookNo;
+            try {
+                cursor = connectionManager.connect(context, query);
+                publishProgress(context);
+                return true;
+            } catch (SQLiteException ex) {
+                ex.printStackTrace();
+                return false;
+            }
+        }
+
+        protected void onProgressUpdate(Context... contexts) {
+            readDataFromCursor();
+            readContentFromFile();
+            displayData();
+        }
+
+        protected void onPostExecute(Boolean success) {
+            if (!success) {
+                connectionManager.showPrompt(BooksActivity.this);
+            }
+        }
+    }
+
+    public void readDataFromCursor() {
+        if (cursor.moveToFirst()) {
+            String author = cursor.getString(0);
+            String title = cursor.getString(1);
+            int cover_id = cursor.getInt(2);
+            int content = cursor.getInt(3);
+            boolean isFavourite = (cursor.getInt(4) == 1);
+            createBook(author, title, cover_id, content, isFavourite);
+        }
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
             case R.id.action_favourite:
                 onFavouriteClicked();
                 return true;
@@ -130,8 +139,8 @@ public class BooksActivity extends Activity {
         }
     }
 
-    public void onFavouriteClicked(){
-        int bookNo = (Integer)getIntent().getExtras().get("bookNo");
+    public void onFavouriteClicked() {
+        int bookNo = (Integer) getIntent().getExtras().get("bookNo");
         new UpdateBookTask().execute(bookNo);
     }
 
@@ -139,7 +148,7 @@ public class BooksActivity extends Activity {
         ContentValues bookValues;
 
         @Override
-        protected void onPreExecute(){
+        protected void onPreExecute() {
             bookValues = new ContentValues();
             Boolean isFavourite = book.isFavourite();
             showMessage(isFavourite);
@@ -161,40 +170,40 @@ public class BooksActivity extends Activity {
             }
         }
 
-        protected void onPostExecute(Boolean success){
-            if(!success){
-                showPrompt();
+        protected void onPostExecute(Boolean success) {
+            if (!success) {
+                connectionManager.showPrompt(BooksActivity.this);
             }
         }
     }
 
-    private void setActionBarTitle(){
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem favMenuItem = menu.findItem(R.id.action_favourite);
-        if (book.isFavourite()){
-            favMenuItem.setTitle(R.string.action_unfavourite);
-        } else{
-            favMenuItem.setTitle(R.string.action_favourite);
+        if (book != null) {
+            if (book.isFavourite()) {
+                favMenuItem.setTitle(R.string.action_unfavourite);
+            } else {
+                favMenuItem.setTitle(R.string.action_favourite);
+            }
         }
+        return super.onPrepareOptionsMenu(menu);
     }
 
-
-    private void showMessage(boolean isFavourite){
+    private void showMessage(boolean isFavourite) {
         int message;
-        if (isFavourite){
+        if (isFavourite) {
             message = R.string.action_favourite_deleted;
-        } else{
+        } else {
             message = R.string.action_favourite_added;
         }
         Toast toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
         toast.show();
     }
-    private void closing(){
-        cursor.close();
-        database.close();
-    }
 
-     private void showPrompt(){
-         Toast toast = Toast.makeText(this, R.string.database_error, Toast.LENGTH_SHORT);
-     }
+    public void onDestroy(){
+        super.onDestroy();
+        connectionManager.close();
     }
+}
 

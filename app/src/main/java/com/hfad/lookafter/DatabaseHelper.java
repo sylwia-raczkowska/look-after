@@ -54,6 +54,7 @@ class DatabaseHelper extends SQLiteOpenHelper{
         db.insert("BOOKS", null, bookValues);
     }
 
+    //todo: zip
         public void unarchive(File source, File target){
             int BUFFER = 2048;
             try{

@@ -19,8 +19,7 @@
         <activity
             android:name=".BooksActivity"
             android:label="@string/title_activity_books_activity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".MainActivity"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".FavouriteListActivity"
             android:label="@string/favourite_list"
