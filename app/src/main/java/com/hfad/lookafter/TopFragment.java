@@ -14,6 +14,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class TopFragment extends Fragment {
 
@@ -28,11 +31,12 @@ public class TopFragment extends Fragment {
         String query = "SELECT _id, COVER_RESOURCE_ID, AUTHOR, TITLE FROM BOOKS WHERE FAVOURITE = 1";
         try {
             favouriteCursor = connectionManager.connect(inflater.getContext(), query);
+            //Map<Integer, Integer> favBooks = new HashMap<Integer, Integer>();
+           // favBooks = getBookData();
             int[] bookCovers = new int[favouriteCursor.getCount()];
             for (int i = 0; i < favouriteCursor.getCount(); i++) {
-                int coverId = getCoverId();
-                bookCovers[i] = coverId;
-               // int bookId = getBookId();
+                //bookData = getBookData();
+                bookCovers[i] = getCoverId();
             }
             ImagesAdapter imagesAdapter = new ImagesAdapter(bookCovers);
             bookRecycler.setAdapter(imagesAdapter);
@@ -41,8 +45,9 @@ public class TopFragment extends Fragment {
             imagesAdapter.setListener(new ImagesAdapter.Listener() {
                 @Override
                 public void onClick(int position) {
+                    long id = getItemId(position);
                     Intent intent = new Intent(getActivity(), BooksActivity.class);
-                    intent.putExtra(BooksActivity.EXTRA_BOOKN0, position+1);
+                    intent.putExtra(BooksActivity.EXTRA_BOOKN0, (int) id);
                     getActivity().startActivity(intent);
                 }
             });
@@ -74,24 +79,24 @@ public class TopFragment extends Fragment {
         }
 
         protected void onProgressUpdate(){
+            int[] bookData = new int[favouriteCursor.getCount()];
             int[] bookCovers = new int[favouriteCursor.getCount()];
             for (int i = 0; i < favouriteCursor.getCount(); i++) {
-                int coverId = getCoverId();
-                bookCovers[i] = coverId;
-                //int bookId = getBookId();
+                //bookData = getBookData();
+                bookCovers[i] = bookData[i];
             }
-            ImagesAdapter imagesAdapter = new ImagesAdapter(bookCovers);
-            bookRecycler.setAdapter(imagesAdapter);
-            GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 3);
-            bookRecycler.setLayoutManager(layoutManager);
-            imagesAdapter.setListener(new ImagesAdapter.Listener() {
-                @Override
-                public void onClick(int position) {
-                    Intent intent = new Intent(getActivity(), BooksActivity.class);
-                    intent.putExtra(BooksActivity.EXTRA_BOOKN0, position);
-                    getActivity().startActivity(intent);
-                }
-            });
+//            //ImagesAdapter imagesAdapter = new ImagesAdapter(bookCovers);
+//            //bookRecycler.setAdapter(imagesAdapter);
+//            GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 3);
+//            bookRecycler.setLayoutManager(layoutManager);
+//            //imagesAdapter.setListener(new ImagesAdapter.Listener() {
+//                @Override
+//                public void onClick(int position) {
+//                    Intent intent = new Intent(getActivity(), BooksActivity.class);
+//                    intent.putExtra(BooksActivity.EXTRA_BOOKN0, position);
+//                    getActivity().startActivity(intent);
+//                }
+//            });
         }
 
         protected void onPostExecute(Boolean success){
@@ -102,12 +107,31 @@ public class TopFragment extends Fragment {
         }
     }
 
-    private int getCoverId(){
-        int bookCover = 0;
-        while(favouriteCursor.moveToNext()) {
-            bookCover = favouriteCursor.getInt(1);
-            return bookCover;
+//    private Map<Integer, Integer> getBookData(){
+//        Map<Integer, Integer> favBooks = new HashMap<Integer, Integer>();
+//        while(favouriteCursor.moveToNext()) {
+//            favBooks.put(favouriteCursor.getInt(1), favouriteCursor.getInt(0));
+//            return favBooks;
+//        }
+//        return favBooks;
+//    }
+
+
+    private int getCoverId() {
+        int coverId = 0;
+        while (favouriteCursor.moveToNext()){
+            coverId = favouriteCursor.getInt(1);
+            return coverId;
         }
-        return bookCover;
+        return 0;
     }
+
+    public long getItemId(int position) {
+        if (favouriteCursor.moveToPosition(position)) {
+                return favouriteCursor.getInt(0);
+            } else {
+                return 0;
+            }
+        }
+
 }

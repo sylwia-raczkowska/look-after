@@ -8,9 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import java.util.Map;
+
 public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ViewHolder>{
 
-    private int[] imageIds;
+    private int[] coverIds;
     private Listener listener;
 
     public static interface Listener{
@@ -43,7 +45,7 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ViewHolder
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         CardView cardView = holder.objectType;
-        holder.imageView.setImageResource(imageIds[position]);
+        holder.imageView.setImageResource(coverIds[position]);
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,13 +58,15 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ViewHolder
 
     }
 
-    public ImagesAdapter(int[] imageIds){
+    public ImagesAdapter(int [] coverIds){
 
-        this.imageIds = imageIds;
+        this.coverIds = coverIds;
     }
 
     @Override
     public int getItemCount() {
-        return imageIds.length;
+        return coverIds.length;
     }
+
+
 }
