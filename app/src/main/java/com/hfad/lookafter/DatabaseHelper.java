@@ -17,11 +17,11 @@ import java.util.zip.ZipInputStream;
  * Created by Niki on 2016-10-31.
  */
 
-class DatabaseHelper extends SQLiteOpenHelper{
+public class DatabaseHelper extends SQLiteOpenHelper{
     private static final String DATABASE_NAME = "BOOKS";
     private static final int DATABASE_VERSION = 1;
 
-    DatabaseHelper(Context context) {
+    public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -33,6 +33,7 @@ class DatabaseHelper extends SQLiteOpenHelper{
                 + "COVER_RESOURCE_ID INTEGER, "
                 + "CONTENT_RESOURCE_ID INTEGER, "
                 + "FAVOURITE INTEGER);");
+        //TODO: Json files
         insertBook(db, "Jan Brzechwa", "\"Na straganie\"", R.drawable.na_straganie, R.raw.na_straganie);
         insertBook(db, "Bracia Grimm", "\"Kopciuszek\"", R.drawable.kopciuszek, R.raw.kopciuszek);
         insertBook(db, "Julian Tuwim", "\"Lokomotywa\"", R.drawable.lokomotywa, R.raw.lokomotywa);
@@ -46,7 +47,6 @@ class DatabaseHelper extends SQLiteOpenHelper{
         insertBook(db, "Bracia Grimm", "\"Królewna Śnieżka\"", R.drawable.krolewna_sniezka, R.raw.krolewna_sniezka);
         insertBook(db, "H. C. Andersen", "\"Świniopas\"", R.drawable.swiniopas, R.raw.swiniopas);
         insertBook(db, "H. C. Andersen", "\"Dziewczynka z zapałkami\"", R.drawable.dziewczynka_z_zapalkami, R.raw.dziewczynka_z_zapalkami);
-
     }
 
     @Override

@@ -5,52 +5,51 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.AsyncTask;
 import android.widget.Toast;
 
-public class ConnectionManager extends AsyncTask<Object, Void, Void> {
+public class ConnectionManager {
 
-    private SQLiteDatabase database;
-    private Cursor cursor;
-    private String query;
-    private BooksCategoryFragment booksCategoryFragment;
-    private TopFragment topFragment;
+    private static Context context;
+    private static SQLiteOpenHelper databaseHelper;
+    private static SQLiteDatabase database;
 
-    public ConnectionManager(TopFragment topFragment) {
-        this.topFragment = topFragment;
+    public void setDatabaseContext(Context context) {
+        ConnectionManager.context = context;
     }
 
-    public ConnectionManager(BooksCategoryFragment booksCategoryFragment){
-        this.booksCategoryFragment = booksCategoryFragment;
-    }
-
-    public ConnectionManager(){
-
-    }
-
-        @Override
-        protected Void doInBackground(Object... params) {
-            Context context = (Context) params[0];
-            String query = (String) params[1];
-            SQLiteOpenHelper DatabaseHelper = new DatabaseHelper(context);
-            database = DatabaseHelper.getReadableDatabase();
-            cursor = database.rawQuery(query, null);
-            return null;
+    public static SQLiteDatabase getDatabaseInstance() {
+        if (database == null) {
+            databaseHelper = new DatabaseHelper(context);
+            database = databaseHelper.getReadableDatabase();
         }
+        return database;
+    }
 
-        @Override
-        protected void onPostExecute(Void result) {
-            if (topFragment != null) topFragment.onPostExecute(cursor);
-            if (booksCategoryFragment != null) booksCategoryFragment.updateAdapter(cursor);
-        }
+    public Cursor getAllBooks() {
+        String query = "SELECT _id, COVER_RESOURCE_ID, AUTHOR, TITLE FROM BOOKS";
+
+        return getDatabaseInstance().rawQuery(query, null);
+    }
+
+    public Cursor getBookByBookNo(int bookNo) {
+        String query = "SELECT AUTHOR, TITLE, COVER_RESOURCE_ID, CONTENT_RESOURCE_ID, FAVOURITE FROM BOOKS WHERE _id = ?";
+
+        return getDatabaseInstance().rawQuery(query, new String[]{String.valueOf(bookNo)});
+    }
+
+    public Cursor getFavouriteBooks() {
+        String query = "SELECT _id, COVER_RESOURCE_ID, AUTHOR, TITLE FROM BOOKS WHERE FAVOURITE = 1";
+
+        return getDatabaseInstance().rawQuery(query, null);
+    }
 
     public void showPrompt(Activity activity) {
         Toast toast = Toast.makeText(activity, R.string.database_error, Toast.LENGTH_SHORT);
         toast.show();
     }
 
-    public void close(){
-        cursor.close();
+    public void close() {
         database.close();
+        database = null;
     }
 }

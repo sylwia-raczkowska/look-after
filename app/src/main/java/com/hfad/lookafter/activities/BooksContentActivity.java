@@ -1,4 +1,4 @@
-package com.hfad.lookafter;
+package com.hfad.lookafter.activities;
 
 import android.app.Activity;
 import android.content.ContentValues;
@@ -15,12 +15,18 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.hfad.lookafter.Book;
+import com.hfad.lookafter.ConnectionManager;
+import com.hfad.lookafter.DatabaseHelper;
+import com.hfad.lookafter.R;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-public class BooksActivity extends Activity {
+public class BooksContentActivity extends Activity {
 
     public static final String EXTRA_BOOKN0 = "bookNo";
     private Cursor cursor;
@@ -34,9 +40,10 @@ public class BooksActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_books);
+
         bookNo = (Integer) getIntent().getExtras().get(EXTRA_BOOKN0);
-        String query = "SELECT AUTHOR, TITLE, COVER_RESOURCE_ID, CONTENT_RESOURCE_ID, FAVOURITE FROM BOOKS WHERE _id = " + bookNo;
-        connectionManager.execute(getApplicationContext(), query);
+        connectionManager.getBookByBookNo(bookNo);
+
     }
 
     @Override
@@ -55,7 +62,8 @@ public class BooksActivity extends Activity {
     private void displayData() {
         ImageView image = (ImageView) findViewById(R.id.pic);
         TextView title = (TextView) findViewById(R.id.title);
-        image.setImageResource(book.getCover_resource_id());
+
+        image.setImageResource(book.getCoverResourceId());
         title.setText(book.getAuthor() + ' ' + book.getTitle());
     }
 
@@ -63,8 +71,9 @@ public class BooksActivity extends Activity {
         TextView content = (TextView) findViewById(R.id.content);
         BufferedReader reader = null;
         try {
-            InputStream inputStream = getResources().openRawResource(book.getContent_resource_id());
+            InputStream inputStream = getResources().openRawResource(book.getContentResourceId());
             reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+
             String line = null;
             while ((line = reader.readLine()) != null) {
                 content.append(line);
@@ -84,18 +93,17 @@ public class BooksActivity extends Activity {
     }
 
     private void getBookData(Context context) {
-        new BooksActivity.BookData().execute(context);
+        new BooksContentActivity.BookData().execute();
     }
 
-    private class BookData extends AsyncTask<Context, Context, Boolean> {
+    private class BookData extends AsyncTask<Void, Void, Boolean> {
 
         @Override
-        protected Boolean doInBackground(Context... contexts) {
-            Context context = contexts[0];
-            String query = "SELECT AUTHOR, TITLE, COVER_RESOURCE_ID, CONTENT_RESOURCE_ID, FAVOURITE FROM BOOKS WHERE _id = " + bookNo;
+        protected Boolean doInBackground(Void... params) {
+
             try {
-               // connectionManager.execute(context, query);
-                publishProgress(context);
+                connectionManager.getBookByBookNo(bookNo);
+                publishProgress();
                 return true;
             } catch (SQLiteException ex) {
                 ex.printStackTrace();
@@ -103,7 +111,7 @@ public class BooksActivity extends Activity {
             }
         }
 
-        protected void onProgressUpdate(Context... contexts) {
+        protected void onProgressUpdate() {
             readDataFromCursor();
             readContentFromFile();
             displayData();
@@ -111,30 +119,35 @@ public class BooksActivity extends Activity {
 
         protected void onPostExecute(Boolean success) {
             if (!success) {
-                connectionManager.showPrompt(BooksActivity.this);
+                connectionManager.showPrompt(BooksContentActivity.this);
             }
         }
     }
 
     public void readDataFromCursor() {
         if (cursor.moveToFirst()) {
+
             String author = cursor.getString(0);
             String title = cursor.getString(1);
             int cover_id = cursor.getInt(2);
             int content = cursor.getInt(3);
             boolean isFavourite = (cursor.getInt(4) == 1);
+
             createBook(author, title, cover_id, content, isFavourite);
         }
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+
             case R.id.action_favourite:
                 onFavouriteClicked();
                 return true;
+
             case R.id.action_settings:
                 //Todo: settings action
                 return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -161,7 +174,7 @@ public class BooksActivity extends Activity {
         protected Boolean doInBackground(Integer... books) {
             int bookNo = books[0];
             try {
-                SQLiteOpenHelper DataBaseHelper = new DatabaseHelper(BooksActivity.this);
+                SQLiteOpenHelper DataBaseHelper = new DatabaseHelper(BooksContentActivity.this);
                 database = DataBaseHelper.getWritableDatabase();
                 database.update("BOOKS", bookValues, "_id = ?", new String[]{Integer.toString(bookNo)});
                 database.close();
@@ -173,7 +186,7 @@ public class BooksActivity extends Activity {
 
         protected void onPostExecute(Boolean success) {
             if (!success) {
-                connectionManager.showPrompt(BooksActivity.this);
+                connectionManager.showPrompt(BooksContentActivity.this);
             }
         }
     }

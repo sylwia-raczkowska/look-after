@@ -1,8 +1,10 @@
-package com.hfad.lookafter;
+package com.hfad.lookafter.activities;
 
 import android.app.ActionBar;
 import android.os.Bundle;
 import android.app.Activity;
+
+import com.hfad.lookafter.R;
 
 public class NotificationActivity extends Activity {
 

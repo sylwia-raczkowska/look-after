@@ -1,4 +1,4 @@
-package com.hfad.lookafter;
+package com.hfad.lookafter.activities;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -14,6 +14,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import com.hfad.lookafter.BooksListFragment;
+import com.hfad.lookafter.R;
+import com.hfad.lookafter.TopFragment;
+import com.hfad.lookafter.activities.NotificationActivity;
 
 public class MainActivity extends Activity {
     private String[] options;
@@ -87,7 +92,7 @@ public class MainActivity extends Activity {
         Fragment fragment;
         switch (position) {
             case 1:
-                fragment = new BooksCategoryFragment();
+                fragment = new BooksListFragment();
                 break;
             default:
                 fragment = new TopFragment();

@@ -9,7 +9,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -17,18 +17,18 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".BooksActivity"
+            android:name=".activities.BooksContentActivity"
             android:label="@string/title_activity_books_activity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".FavouriteListActivity"
+            android:name=".activities.FavouriteListActivity"
             android:label="@string/favourite_list"
             android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName=".activities.MainActivity"/>
         <activity
-            android:name=".NotificationActivity"
+            android:name=".activities.NotificationActivity"
             android:label="@string/title_activity_notification"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".activities.MainActivity">
         </activity>
     </application>
 
