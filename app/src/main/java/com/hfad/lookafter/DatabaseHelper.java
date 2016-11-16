@@ -38,6 +38,15 @@ class DatabaseHelper extends SQLiteOpenHelper{
         insertBook(db, "Julian Tuwim", "\"Lokomotywa\"", R.drawable.lokomotywa, R.raw.lokomotywa);
         insertBook(db, "Julian Tuwim", "\"Ptasie radio\"", R.drawable.ptasie_radio, R.raw.ptasie_radio);
         insertBook(db, "Julian Tuwim", "\"Spóźniony słowik\"", R.drawable.spozniony_slowik, R.raw.spozniony_slowik);
+        insertBook(db, "Leopold Staff", "\"Deszcz majowy\"", R.drawable.deszcz_majowy, R.raw.deszcz_majowy);
+        insertBook(db, "Julian Tuwim", "\"Taniec\"", R.drawable.taniec, R.raw.taniec);
+        insertBook(db, "Juliam Tuwim", "\"Abecadło\"", R.drawable.abecadlo, R.raw.abecadlo);
+        insertBook(db, "Ewa Zarębina", "\"Idzie niebo ciemną nocą\"", R.drawable.idzie_niebo, R.raw.idzie_niebo);
+        insertBook(db, "Bracia Grimm", "\"Czerwony Kapturek\"", R.drawable.czerwony_kapturek, R.raw.czerwony_kapturek);
+        insertBook(db, "Bracia Grimm", "\"Królewna Śnieżka\"", R.drawable.krolewna_sniezka, R.raw.krolewna_sniezka);
+        insertBook(db, "H. C. Andersen", "\"Świniopas\"", R.drawable.swiniopas, R.raw.swiniopas);
+        insertBook(db, "H. C. Andersen", "\"Dziewczynka z zapałkami\"", R.drawable.dziewczynka_z_zapalkami, R.raw.dziewczynka_z_zapalkami);
+
     }
 
     @Override

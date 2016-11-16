@@ -27,7 +27,7 @@ public class FavouriteListActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favourite_list);
         listFavourites = getListView();
-        generateFavouriteList(getApplicationContext());
+        //generateFavouriteList(getApplicationContext());
         onItemClickListener();
     }
 
@@ -42,7 +42,7 @@ public class FavouriteListActivity extends ListActivity {
             Context context = contexts[0];
             String query = "SELECT _id, COVER_RESOURCE_ID, AUTHOR, TITLE FROM BOOKS WHERE FAVOURITE = 1";
             try {
-                favouriteCursor = connectionManager.connect(context, query);
+                //favouriteCursor = connectionManager.connect(context, query);
                 publishProgress(context);
                 return true;
             }catch (SQLiteException ex){

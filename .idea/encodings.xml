@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/app/src/main/res/raw/abecadlo.txt" charset="ISO-8859-2" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/raw/czerwony_kapturek.txt" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/raw/deszcz_majowy.txt" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/raw/dziewczynka_z_zapalkami.txt" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/raw/idzie_niebo.txt" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/raw/kopciuszek.txt" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/raw/krolewna_sniezka.txt" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/raw/lokomotywa.txt" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/raw/na_straganie.txt" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/raw/ptasie_radio.txt" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/raw/spozniony_slowik.txt" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/raw/swiniopas.txt" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/raw/taniec.txt" charset="UTF-8" />
   </component>
 </project>

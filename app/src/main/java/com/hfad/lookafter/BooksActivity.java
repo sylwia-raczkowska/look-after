@@ -28,14 +28,15 @@ public class BooksActivity extends Activity {
     private Book book;
     private int bookNo;
     private Menu menu;
-    private ConnectionManager connectionManager = new ConnectionManager();
+    private ConnectionManager connectionManager =  new ConnectionManager();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_books);
         bookNo = (Integer) getIntent().getExtras().get(EXTRA_BOOKN0);
-        getBookData(getApplicationContext());
+        String query = "SELECT AUTHOR, TITLE, COVER_RESOURCE_ID, CONTENT_RESOURCE_ID, FAVOURITE FROM BOOKS WHERE _id = " + bookNo;
+        connectionManager.execute(getApplicationContext(), query);
     }
 
     @Override
@@ -93,7 +94,7 @@ public class BooksActivity extends Activity {
             Context context = contexts[0];
             String query = "SELECT AUTHOR, TITLE, COVER_RESOURCE_ID, CONTENT_RESOURCE_ID, FAVOURITE FROM BOOKS WHERE _id = " + bookNo;
             try {
-                cursor = connectionManager.connect(context, query);
+               // connectionManager.execute(context, query);
                 publishProgress(context);
                 return true;
             } catch (SQLiteException ex) {
