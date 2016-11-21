@@ -1,10 +1,16 @@
 package com.hfad.lookafter;
 
 
+import com.google.gson.annotations.SerializedName;
+
 public class Book {
+    @SerializedName("author")
     private String author;
+    @SerializedName("titles")
     private String title;
+    @SerializedName("coverResourceId")
     private int coverResourceId;
+    @SerializedName("contentResourceId")
     private int contentResourceId;
 
     public Book (String author, String title, int coverResourceId, int content, boolean isFavourite){

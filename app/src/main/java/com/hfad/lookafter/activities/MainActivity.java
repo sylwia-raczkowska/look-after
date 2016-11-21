@@ -15,6 +15,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.hfad.lookafter.Book;
 import com.hfad.lookafter.BooksListFragment;
 import com.hfad.lookafter.R;
 import com.hfad.lookafter.TopFragment;
@@ -22,6 +25,7 @@ import com.hfad.lookafter.activities.NotificationActivity;
 
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.UnsupportedEncodingException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -106,9 +110,10 @@ public class MainActivity extends Activity {
                 fragment = new TopFragment();
         }
 
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.replace(R.id.fragment_container, fragment);
-        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        FragmentTransaction ft = getFragmentManager()
+                .beginTransaction().
+                 replace(R.id.fragment_container, fragment)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         ft.commit();
         setActionBarTitle(position);
         drawerLayout.closeDrawer(drawerList);
@@ -122,10 +127,6 @@ public class MainActivity extends Activity {
             title = options[position];
         }
         getActionBar().setTitle(title);
-    }
-
-    private void deserialize(){
-        Reader reader = new InputStreamReader(MainActivity.class.getResourceAsStream("/books.json"))
     }
 
 }

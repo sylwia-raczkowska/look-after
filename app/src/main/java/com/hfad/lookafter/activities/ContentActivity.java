@@ -22,6 +22,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import butterknife.BindView;
+
 public class ContentActivity extends Activity {
 
     public static final String EXTRA_BOOKN0 = "bookNo";
@@ -29,7 +31,14 @@ public class ContentActivity extends Activity {
     private Book book;
     private int bookNo;
     private Menu menu;
-    private ConnectionManager connectionManager =  new ConnectionManager();
+    private ConnectionManager connectionManager = new ConnectionManager();
+
+    @BindView(R.id.pic)
+    ImageView image;
+    @BindView(R.id.title)
+    TextView title;
+    @BindView(R.id.content)
+    TextView content;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,15 +65,11 @@ public class ContentActivity extends Activity {
     }
 
     private void displayData() {
-        ImageView image = (ImageView) findViewById(R.id.pic);
-        TextView title = (TextView) findViewById(R.id.title);
-
         image.setImageResource(book.getCoverResourceId());
         title.setText(book.getAuthor() + ' ' + book.getTitle());
     }
 
     private void readContentFromFile() {
-        TextView content = (TextView) findViewById(R.id.content);
         BufferedReader reader = null;
         try {
             InputStream inputStream = getResources().openRawResource(book.getContentResourceId());
@@ -212,7 +217,7 @@ public class ContentActivity extends Activity {
         toast.show();
     }
 
-    public void onDestroy(){
+    public void onDestroy() {
         super.onDestroy();
         connectionManager.close();
     }
