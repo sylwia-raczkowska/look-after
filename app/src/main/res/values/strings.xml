@@ -27,4 +27,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="database_error">Baza danych jest niedostępna</string>
     <string name="favourite_list">Ulubione książki</string>
+    <string name="press_to_exit">Naciśnij jeszcze raz by wyjść z aplikacji.</string>
+    <string name="empty_library">Twoja biblioteka jest pusta. Dodaj ulubione ksi/string>
 </resources>
