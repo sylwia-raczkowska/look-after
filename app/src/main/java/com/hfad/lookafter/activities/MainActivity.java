@@ -114,6 +114,7 @@ public class MainActivity extends Activity {
                 .beginTransaction().
                  replace(R.id.fragment_container, fragment)
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        ft.addToBackStack(fragment.getClass().getName());
         ft.commit();
         setActionBarTitle(position);
         drawerLayout.closeDrawer(drawerList);

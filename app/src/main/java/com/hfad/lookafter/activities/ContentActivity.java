@@ -33,12 +33,13 @@ public class ContentActivity extends Activity {
     private Menu menu;
     private ConnectionManager connectionManager = new ConnectionManager();
 
-    @BindView(R.id.pic)
-    ImageView image;
-    @BindView(R.id.title)
-    TextView title;
-    @BindView(R.id.content)
-    TextView content;
+
+   // @BindView(R.id.pic)
+   // ImageView image;
+   //@BindView(R.id.title)
+   //TextView title;
+   //@BindView(R.id.content)
+   //TextView content;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,11 +66,15 @@ public class ContentActivity extends Activity {
     }
 
     private void displayData() {
+        ImageView image = (ImageView) findViewById(R.id.pic);
+        TextView title = (TextView) findViewById(R.id.title);
+
         image.setImageResource(book.getCoverResourceId());
         title.setText(book.getAuthor() + ' ' + book.getTitle());
     }
 
     private void readContentFromFile() {
+        TextView content = (TextView) findViewById(R.id.content);
         BufferedReader reader = null;
         try {
             InputStream inputStream = getResources().openRawResource(book.getContentResourceId());
@@ -80,7 +85,6 @@ public class ContentActivity extends Activity {
                 content.append(line);
                 content.append("\n");
             }
-            displayData();
         } catch (IOException e) {
             Log.e("IOException", "readingContentFromFile()");
         } finally {
@@ -111,6 +115,7 @@ public class ContentActivity extends Activity {
 
         @Override
         protected void onProgressUpdate(Void... params) {
+
             readDataFromCursor();
         }
 
