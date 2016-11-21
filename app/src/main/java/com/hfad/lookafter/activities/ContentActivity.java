@@ -2,11 +2,8 @@ package com.hfad.lookafter.activities;
 
 import android.app.Activity;
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,7 +15,6 @@ import android.widget.Toast;
 
 import com.hfad.lookafter.Book;
 import com.hfad.lookafter.ConnectionManager;
-import com.hfad.lookafter.DatabaseHelper;
 import com.hfad.lookafter.R;
 
 import java.io.BufferedReader;
@@ -26,11 +22,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-public class BooksContentActivity extends Activity {
+public class ContentActivity extends Activity {
 
     public static final String EXTRA_BOOKN0 = "bookNo";
     private Cursor cursor;
-    private SQLiteDatabase database;
     private Book book;
     private int bookNo;
     private Menu menu;
@@ -42,7 +37,7 @@ public class BooksContentActivity extends Activity {
         setContentView(R.layout.activity_books);
 
         bookNo = (Integer) getIntent().getExtras().get(EXTRA_BOOKN0);
-        connectionManager.getBookByBookNo(bookNo);
+        new BookData().execute(bookNo);
 
     }
 
@@ -57,6 +52,7 @@ public class BooksContentActivity extends Activity {
 
     private void createBook(String author, String title, int cover_id, int content, boolean isFavourite) {
         book = new Book(author, title, cover_id, content, isFavourite);
+        displayData();
     }
 
     private void displayData() {
@@ -79,6 +75,7 @@ public class BooksContentActivity extends Activity {
                 content.append(line);
                 content.append("\n");
             }
+            displayData();
         } catch (IOException e) {
             Log.e("IOException", "readingContentFromFile()");
         } finally {
@@ -92,17 +89,13 @@ public class BooksContentActivity extends Activity {
         }
     }
 
-    private void getBookData(Context context) {
-        new BooksContentActivity.BookData().execute();
-    }
-
-    private class BookData extends AsyncTask<Void, Void, Boolean> {
+    private class BookData extends AsyncTask<Integer, Void, Boolean> {
 
         @Override
-        protected Boolean doInBackground(Void... params) {
-
+        protected Boolean doInBackground(Integer... books) {
+            int bookNo = books[0];
             try {
-                connectionManager.getBookByBookNo(bookNo);
+                cursor = connectionManager.getBookByBookNo(bookNo);
                 publishProgress();
                 return true;
             } catch (SQLiteException ex) {
@@ -111,15 +104,14 @@ public class BooksContentActivity extends Activity {
             }
         }
 
-        protected void onProgressUpdate() {
+        @Override
+        protected void onProgressUpdate(Void... params) {
             readDataFromCursor();
-            readContentFromFile();
-            displayData();
         }
 
         protected void onPostExecute(Boolean success) {
             if (!success) {
-                connectionManager.showPrompt(BooksContentActivity.this);
+                connectionManager.showPrompt(ContentActivity.this);
             }
         }
     }
@@ -134,6 +126,7 @@ public class BooksContentActivity extends Activity {
             boolean isFavourite = (cursor.getInt(4) == 1);
 
             createBook(author, title, cover_id, content, isFavourite);
+            readContentFromFile();
         }
     }
 
@@ -159,25 +152,19 @@ public class BooksContentActivity extends Activity {
     }
 
     private class UpdateBookTask extends AsyncTask<Integer, Void, Boolean> {
+
         ContentValues bookValues;
 
         @Override
         protected void onPreExecute() {
-            bookValues = new ContentValues();
-            Boolean isFavourite = book.isFavourite();
-            showMessage(isFavourite);
-            bookValues.put("FAVOURITE", !isFavourite);
-            book.setFavourite(!isFavourite);
+            onFavouriteClick();
         }
 
         @Override
         protected Boolean doInBackground(Integer... books) {
             int bookNo = books[0];
             try {
-                SQLiteOpenHelper DataBaseHelper = new DatabaseHelper(BooksContentActivity.this);
-                database = DataBaseHelper.getWritableDatabase();
-                database.update("BOOKS", bookValues, "_id = ?", new String[]{Integer.toString(bookNo)});
-                database.close();
+                connectionManager.uploadData(bookValues, bookNo);
                 return true;
             } catch (SQLiteException e) {
                 return false;
@@ -186,8 +173,18 @@ public class BooksContentActivity extends Activity {
 
         protected void onPostExecute(Boolean success) {
             if (!success) {
-                connectionManager.showPrompt(BooksContentActivity.this);
+                connectionManager.showPrompt(ContentActivity.this);
             }
+        }
+
+        private void onFavouriteClick() {
+            Boolean isFavourite = book.isFavourite();
+
+            showMessage(isFavourite);
+
+            bookValues = new ContentValues();
+            bookValues.put("FAVOURITE", !isFavourite);
+            book.setFavourite(!isFavourite);
         }
     }
 

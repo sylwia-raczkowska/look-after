@@ -1,6 +1,7 @@
 package com.hfad.lookafter;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -25,6 +26,11 @@ public class ConnectionManager {
         return database;
     }
 
+    public void uploadData(ContentValues bookValues, int bookNo){
+        database = databaseHelper.getWritableDatabase();
+        database.update("BOOKS", bookValues, "_id = ?", new String[]{Integer.toString(bookNo)});
+    }
+
     public Cursor getAllBooks() {
         String query = "SELECT _id, COVER_RESOURCE_ID, AUTHOR, TITLE FROM BOOKS";
 
@@ -32,7 +38,7 @@ public class ConnectionManager {
     }
 
     public Cursor getBookByBookNo(int bookNo) {
-        String query = "SELECT AUTHOR, TITLE, COVER_RESOURCE_ID, CONTENT_RESOURCE_ID, FAVOURITE FROM BOOKS WHERE _id = ?";
+        String query = "SELECT AUTHOR, TITLE, COVER_RESOURCE_ID, CONTENT_RESOURCE_ID, FAVOURITE FROM BOOKS WHERE _id = ?" + bookNo;
 
         return getDatabaseInstance().rawQuery(query, new String[]{String.valueOf(bookNo)});
     }

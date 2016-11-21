@@ -70,8 +70,8 @@ public class FavouriteListActivity extends ListActivity {
         listFavourites.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(FavouriteListActivity.this, BooksContentActivity.class);
-                intent.putExtra(BooksContentActivity.EXTRA_BOOKN0, (int) id);
+                Intent intent = new Intent(FavouriteListActivity.this, ContentActivity.class);
+                intent.putExtra(ContentActivity.EXTRA_BOOKN0, (int) id);
                 startActivity(intent);
             }
         });

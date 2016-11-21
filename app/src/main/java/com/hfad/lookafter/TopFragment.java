@@ -11,7 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.hfad.lookafter.activities.BooksContentActivity;
+import com.hfad.lookafter.activities.ContentActivity;
 
 
 public class TopFragment extends Fragment {
@@ -44,8 +44,8 @@ public class TopFragment extends Fragment {
                 @Override
                 public void onClick(int position) {
                     long id = getItemId(position);
-                    Intent intent = new Intent(getActivity(), BooksContentActivity.class);
-                    intent.putExtra(BooksContentActivity.EXTRA_BOOKN0, (int) id);
+                    Intent intent = new Intent(getActivity(), ContentActivity.class);
+                    intent.putExtra(ContentActivity.EXTRA_BOOKN0, (int) id);
                     getActivity().startActivity(intent);
                 }
             });

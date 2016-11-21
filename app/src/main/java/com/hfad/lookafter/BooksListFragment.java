@@ -1,6 +1,7 @@
 package com.hfad.lookafter;
 
 import android.app.ListFragment;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
@@ -16,7 +17,7 @@ import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
-import com.hfad.lookafter.activities.BooksContentActivity;
+import com.hfad.lookafter.activities.ContentActivity;
 import com.hfad.lookafter.activities.FavouriteListActivity;
 
 public class BooksListFragment extends ListFragment {
@@ -33,10 +34,16 @@ public class BooksListFragment extends ListFragment {
     }
 
     private void generateList() {
-        new ListGenerator().execute();
+        new ListGenerator(getActivity()).execute();
     }
 
     private class ListGenerator extends AsyncTask<Void, Cursor, Boolean> {
+
+        private Context context;
+
+        public ListGenerator(Context context){
+            this.context = context;
+        }
 
         @Override
         protected Boolean doInBackground(Void... params) {
@@ -50,12 +57,15 @@ public class BooksListFragment extends ListFragment {
             }
         }
 
-        protected void onProgressUpdate(Cursor cursor) {
-            CursorAdapter adapter = new SimpleCursorAdapter(getContext(), R.layout.activity_list_entry,
+        @Override
+        protected void onProgressUpdate(Cursor... cursors) {
+           Cursor cursor = cursors[0];
+            CursorAdapter adapter = new SimpleCursorAdapter(context, R.layout.activity_list_entry,
                     cursor, new String[]{"COVER_RESOURCE_ID", "AUTHOR", "TITLE"}, new int[]{R.id.pic, R.id.author_entry, R.id.title_entry}, 0);
             setListAdapter(adapter);
         }
 
+        @Override
         protected void onPostExecute(Boolean success) {
             if (!success) {
                 connectionManager.showPrompt(getActivity());
@@ -63,11 +73,10 @@ public class BooksListFragment extends ListFragment {
         }
     }
 
-
     @Override
     public void onListItemClick(ListView listView, View itemView, int position, long id) {
-        Intent intent = new Intent(getActivity(), BooksContentActivity.class);
-        intent.putExtra(BooksContentActivity.EXTRA_BOOKN0, (int) id);
+        Intent intent = new Intent(getActivity(), ContentActivity.class);
+        intent.putExtra(ContentActivity.EXTRA_BOOKN0, (int) id);
         startActivity(intent);
     }
 

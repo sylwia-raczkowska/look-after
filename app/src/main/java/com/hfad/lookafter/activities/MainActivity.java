@@ -20,13 +20,21 @@ import com.hfad.lookafter.R;
 import com.hfad.lookafter.TopFragment;
 import com.hfad.lookafter.activities.NotificationActivity;
 
+import java.io.InputStreamReader;
+import java.io.Reader;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MainActivity extends Activity {
     private String[] options;
-    private ListView drawerList;
-    private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
 
+    @BindView(R.id.drawer) ListView drawerList;
+    @BindView(R.id.drawer_layout) DrawerLayout drawerLayout;
+
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
+
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id){
             selectItem(position);
@@ -37,9 +45,9 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
+
         options = getResources().getStringArray(R.array.options);
-        drawerList = (ListView)findViewById(R.id.drawer);
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_activated_1, options));
         drawerList.setOnItemClickListener(new DrawerItemClickListener());
         if (savedInstanceState == null){
@@ -47,6 +55,7 @@ public class MainActivity extends Activity {
         }
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open_drawer, R.string.close_drawer);
         drawerLayout.setDrawerListener(actionBarDrawerToggle);
+
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
     }
@@ -54,7 +63,6 @@ public class MainActivity extends Activity {
     @Override
     protected void onPostCreate(Bundle savedInstanceState){
         super.onPostCreate(savedInstanceState);
-        // synchronizacja stanu przycisku navigation drawer
         actionBarDrawerToggle.syncState();
     }
 
@@ -100,7 +108,6 @@ public class MainActivity extends Activity {
 
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_container, fragment);
-        ft.addToBackStack(null);
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         ft.commit();
         setActionBarTitle(position);
@@ -115,6 +122,10 @@ public class MainActivity extends Activity {
             title = options[position];
         }
         getActionBar().setTitle(title);
+    }
+
+    private void deserialize(){
+        Reader reader = new InputStreamReader(MainActivity.class.getResourceAsStream("/books.json"))
     }
 
 }
