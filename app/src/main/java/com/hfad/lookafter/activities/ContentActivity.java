@@ -23,6 +23,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class ContentActivity extends Activity {
 
@@ -44,6 +45,8 @@ public class ContentActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_books);
+
+        ButterKnife.bind(this);
 
         bookNo = (Integer) getIntent().getExtras().get(EXTRA_BOOKN0);
         new BookData().execute(bookNo);

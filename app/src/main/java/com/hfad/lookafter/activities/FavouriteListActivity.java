@@ -28,7 +28,7 @@ public class FavouriteListActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favourite_list);
         listFavourites = getListView();
-        //generateFavouriteList(getApplicationContext());
+        generateFavouriteList(getApplicationContext());
         onItemClickListener();
     }
 
@@ -36,7 +36,7 @@ public class FavouriteListActivity extends ListActivity {
         new FavouriteListGenerator().execute(context);
     }
 
-    private class FavouriteListGenerator extends AsyncTask<Context, Context, Boolean> {
+    private class FavouriteListGenerator extends AsyncTask<Context, Cursor, Boolean> {
 
         @Override
         protected Boolean doInBackground(Context... contexts) {
@@ -44,23 +44,24 @@ public class FavouriteListActivity extends ListActivity {
             String query = "SELECT _id, COVER_RESOURCE_ID, AUTHOR, TITLE FROM BOOKS WHERE FAVOURITE = 1";
             try {
                 //favouriteCursor = connectionManager.connect(context, query);
-                publishProgress(context);
+                Cursor cursor = connectionManager.getFavouriteBooks();
+                publishProgress(cursor);
                 return true;
-            }catch (SQLiteException ex){
+            } catch (SQLiteException ex) {
                 ex.printStackTrace();
                 return false;
             }
         }
 
-        protected void onProgressUpdate(Context... contexts){
-            Context context = contexts[0];
-            CursorAdapter favouriteAdapter = new SimpleCursorAdapter(context, R.layout.activity_list_entry, favouriteCursor,
-                    new String[]{"COVER_RESOURCE_ID","AUTHOR", "TITLE"}, new int[]{R.id.pic, R.id.author_entry, R.id.title_entry}, 0);
+        protected void onProgressUpdate(Cursor... cursors) {
+            Cursor cursor = cursors[0];
+            CursorAdapter favouriteAdapter = new SimpleCursorAdapter(FavouriteListActivity.this, R.layout.activity_list_entry, cursor,
+                    new String[]{"COVER_RESOURCE_ID", "AUTHOR", "TITLE"}, new int[]{R.id.pic, R.id.author_entry, R.id.title_entry}, 0);
             setListAdapter(favouriteAdapter);
         }
 
-        protected void onPostExecute(Boolean success){
-            if(!success){
+        protected void onPostExecute(Boolean success) {
+            if (!success) {
                 connectionManager.showPrompt(FavouriteListActivity.this);
             }
         }
@@ -77,10 +78,10 @@ public class FavouriteListActivity extends ListActivity {
         });
     }
 
-     @Override
-    public void onDestroy(){
-         super.onDestroy();
-         connectionManager.close();
-     }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        connectionManager.close();
+    }
 
 }

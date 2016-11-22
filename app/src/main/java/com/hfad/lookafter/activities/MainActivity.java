@@ -6,6 +6,7 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Menu;
@@ -15,17 +16,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.hfad.lookafter.Book;
 import com.hfad.lookafter.BooksListFragment;
 import com.hfad.lookafter.R;
 import com.hfad.lookafter.TopFragment;
-import com.hfad.lookafter.activities.NotificationActivity;
-
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.UnsupportedEncodingException;
+import com.hfad.lookafter.Utils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,16 +28,20 @@ public class MainActivity extends Activity {
     private String[] options;
     private ActionBarDrawerToggle actionBarDrawerToggle;
 
-    @BindView(R.id.drawer) ListView drawerList;
-    @BindView(R.id.drawer_layout) DrawerLayout drawerLayout;
+    @BindView(R.id.drawer)
+    ListView drawerList;
+    @BindView(R.id.drawer_layout)
+    DrawerLayout drawerLayout;
+
+    private boolean isBackFirstPressed = true;
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
 
         @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             selectItem(position);
         }
-    };
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +52,7 @@ public class MainActivity extends Activity {
         options = getResources().getStringArray(R.array.options);
         drawerList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_activated_1, options));
         drawerList.setOnItemClickListener(new DrawerItemClickListener());
-        if (savedInstanceState == null){
+        if (savedInstanceState == null) {
             selectItem(0);
         }
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open_drawer, R.string.close_drawer);
@@ -65,29 +63,29 @@ public class MainActivity extends Activity {
     }
 
     @Override
-    protected void onPostCreate(Bundle savedInstanceState){
+    protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         actionBarDrawerToggle.syncState();
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig){
+    public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         actionBarDrawerToggle.onConfigurationChanged(newConfig);
     }
 
     @Override
-    public boolean onCreateOptionsMenu (Menu menu){
+    public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-        if(actionBarDrawerToggle.onOptionsItemSelected(item)){
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.action_create_notification:
                 Intent intent = new Intent(this, NotificationActivity.class);
                 startActivity(intent);
@@ -100,7 +98,7 @@ public class MainActivity extends Activity {
         }
     }
 
-    private void selectItem(int position){
+    private void selectItem(int position) {
         Fragment fragment;
         switch (position) {
             case 1:
@@ -112,21 +110,37 @@ public class MainActivity extends Activity {
 
         FragmentTransaction ft = getFragmentManager()
                 .beginTransaction().
-                 replace(R.id.fragment_container, fragment)
+                        replace(R.id.fragment_container, fragment)
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         ft.commit();
         setActionBarTitle(position);
         drawerLayout.closeDrawer(drawerList);
     }
 
-    private void setActionBarTitle(int position){
+    private void setActionBarTitle(int position) {
         String title;
-        if(position == 0){
+        if (position == 0) {
             title = getResources().getString(R.string.app_name);
-        } else{
+        } else {
             title = options[position];
         }
         getActionBar().setTitle(title);
     }
 
+    @Override
+    public void onBackPressed() {
+        if (isBackFirstPressed) {
+            isBackFirstPressed = false;
+            Utils.showSnackbar(findViewById(android.R.id.content), R.string.press_to_exit, this);
+
+            (new Handler(this.getMainLooper())).postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    isBackFirstPressed = true;
+                }
+            }, 2000);
+        } else {
+            super.onBackPressed();
+        }
+    }
 }

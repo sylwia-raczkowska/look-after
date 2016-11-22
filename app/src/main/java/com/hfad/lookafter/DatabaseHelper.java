@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -38,8 +39,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + "CONTENT_RESOURCE_ID INTEGER, "
                 + "FAVOURITE INTEGER);");
         List<Book> books = deserialize();
-        //for (int i = 0; i < books.size(); i++) {
-        insertBook(db, books.get(0).getAuthor(), books.get(0).getTitle(), R.drawable.na_straganie, R.raw.na_straganie);
+        // lepiej by to było trzymac w jsonie jako sniezki do zdjec
+        Integer[] images = {R.drawable.na_straganie, R.drawable.kopciuszek, R.drawable.lokomotywa, R.drawable.ptasie_radio, R.drawable.spozniony_slowik, R.drawable.deszcz_majowy,
+                R.drawable.taniec, R.drawable.abecadlo, R.drawable.idzie_niebo, R.drawable.czerwony_kapturek, R.drawable.krolewna_sniezka, R.drawable.swiniopas, R.drawable.dziewczynka_z_zapalkami};
+        Integer[] texts = {R.raw.na_straganie, R.raw.kopciuszek, R.raw.lokomotywa, R.raw.ptasie_radio, R.raw.spozniony_slowik, R.raw.deszcz_majowy,
+                R.raw.taniec, R.raw.abecadlo, R.raw.idzie_niebo, R.raw.czerwony_kapturek, R.raw.krolewna_sniezka, R.raw.swiniopas, R.raw.dziewczynka_z_zapalkami};
+        for (int i = 0; i < books.size(); i++) {
+            Book book = books.get(i);
+            insertBook(db, book.getAuthor(), book.getTitle(), images[i], texts[i]);
 //            insertBook(db, "Bracia Grimm", "\"Kopciuszek\"", R.drawable.kopciuszek, R.raw.kopciuszek);
 //            insertBook(db, "Julian Tuwim", "\"Lokomotywa\"", R.drawable.lokomotywa, R.raw.lokomotywa);
 //            insertBook(db, "Julian Tuwim", "\"Ptasie radio\"", R.drawable.ptasie_radio, R.raw.ptasie_radio);
@@ -52,6 +59,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 //            insertBook(db, "Bracia Grimm", "\"Królewna Śnieżka\"", R.drawable.krolewna_sniezka, R.raw.krolewna_sniezka);
 //            insertBook(db, "H. C. Andersen", "\"Świniopas\"", R.drawable.swiniopas, R.raw.swiniopas);
 //            insertBook(db, "H. C. Andersen", "\"Dziewczynka z zapałkami\"", R.drawable.dziewczynka_z_zapalkami, R.raw.dziewczynka_z_zapalkami);
+        }
     }
 
     @Override
@@ -73,7 +81,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         InputStream inputStream = context.getResources().openRawResource(R.raw.books);
         Reader reader = new BufferedReader(new InputStreamReader(inputStream));
         Gson gson = new GsonBuilder().create();
-        books = gson.fromJson(reader, ArrayList.class);
+        books = gson.fromJson(reader, new TypeToken<List<Book>>() {}.getType());
         return books;
     }
 }
