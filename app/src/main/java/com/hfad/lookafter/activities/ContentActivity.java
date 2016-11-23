@@ -69,11 +69,15 @@ public class ContentActivity extends Activity {
     }
 
     private void displayData() {
+        ImageView image = (ImageView) findViewById(R.id.pic);
+        TextView title = (TextView) findViewById(R.id.title);
+
         image.setImageResource(book.getCoverResourceId());
         title.setText(book.getAuthor() + ' ' + book.getTitle());
     }
 
     private void readContentFromFile() {
+        TextView content = (TextView) findViewById(R.id.content);
         BufferedReader reader = null;
         try {
             InputStream inputStream = getResources().openRawResource(book.getContentResourceId());

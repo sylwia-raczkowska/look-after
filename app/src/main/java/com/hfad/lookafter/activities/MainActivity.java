@@ -40,9 +40,7 @@ public class MainActivity extends Activity {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             selectItem(position);
         }
-    }
-
-    ;
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,7 +123,7 @@ public class MainActivity extends Activity {
                 .beginTransaction().
                         replace(R.id.fragment_container, fragment)
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        ft.addToBackStack(null);
+        ft.addToBackStack(fragment.getClass().getName());
         ft.commit();
     }
 
