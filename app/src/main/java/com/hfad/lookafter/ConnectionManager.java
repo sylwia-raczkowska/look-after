@@ -18,6 +18,7 @@ public class ConnectionManager {
         ConnectionManager.context = context;
     }
 
+
     public static SQLiteDatabase getDatabaseInstance() {
         if (database == null) {
             databaseHelper = new DatabaseHelper(context);
@@ -38,7 +39,7 @@ public class ConnectionManager {
     }
 
     public Cursor getBookByBookNo(int bookNo) {
-        String query = "SELECT AUTHOR, TITLE, COVER_RESOURCE_ID, CONTENT_RESOURCE_ID, FAVOURITE FROM BOOKS WHERE _id = ?" + bookNo;
+        String query = "SELECT AUTHOR, TITLE, COVER_RESOURCE_ID, CONTENT_RESOURCE_ID, FAVOURITE FROM BOOKS WHERE _id = ?";
 
         return getDatabaseInstance().rawQuery(query, new String[]{String.valueOf(bookNo)});
     }
@@ -55,7 +56,7 @@ public class ConnectionManager {
     }
 
     public void close() {
-        database.close();
+        databaseHelper.close();
         database = null;
     }
 }
