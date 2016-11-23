@@ -23,6 +23,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class ContentActivity extends Activity {
 
@@ -34,17 +35,19 @@ public class ContentActivity extends Activity {
     private ConnectionManager connectionManager = new ConnectionManager();
 
 
-   // @BindView(R.id.pic)
-   // ImageView image;
-   //@BindView(R.id.title)
-   //TextView title;
-   //@BindView(R.id.content)
-   //TextView content;
+   @BindView(R.id.pic)
+   ImageView image;
+   @BindView(R.id.title)
+   TextView title;
+   @BindView(R.id.content)
+   TextView content;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_books);
+
+        ButterKnife.bind(this);
 
         bookNo = (Integer) getIntent().getExtras().get(EXTRA_BOOKN0);
         new BookData().execute(bookNo);
@@ -66,15 +69,11 @@ public class ContentActivity extends Activity {
     }
 
     private void displayData() {
-        ImageView image = (ImageView) findViewById(R.id.pic);
-        TextView title = (TextView) findViewById(R.id.title);
-
         image.setImageResource(book.getCoverResourceId());
         title.setText(book.getAuthor() + ' ' + book.getTitle());
     }
 
     private void readContentFromFile() {
-        TextView content = (TextView) findViewById(R.id.content);
         BufferedReader reader = null;
         try {
             InputStream inputStream = getResources().openRawResource(book.getContentResourceId());
@@ -148,7 +147,7 @@ public class ContentActivity extends Activity {
                 return true;
 
             case R.id.action_settings:
-                //Todo: settings action
+                //TODO: przypomnienia
                 return true;
 
             default:

@@ -1,7 +1,6 @@
 package com.hfad.lookafter.activities;
 
 import android.app.ListActivity;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
@@ -28,39 +27,37 @@ public class FavouriteListActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favourite_list);
         listFavourites = getListView();
-        //generateFavouriteList(getApplicationContext());
+        generateFavouriteList();
         onItemClickListener();
     }
 
-    private void generateFavouriteList(Context context) {
-        new FavouriteListGenerator().execute(context);
+    private void generateFavouriteList() {
+        new FavouriteListGenerator().execute();
     }
 
-    private class FavouriteListGenerator extends AsyncTask<Context, Context, Boolean> {
+    private class FavouriteListGenerator extends AsyncTask<Void, Cursor, Boolean> {
 
         @Override
-        protected Boolean doInBackground(Context... contexts) {
-            Context context = contexts[0];
-            String query = "SELECT _id, COVER_RESOURCE_ID, AUTHOR, TITLE FROM BOOKS WHERE FAVOURITE = 1";
+        protected Boolean doInBackground(Void... params) {
             try {
-                //favouriteCursor = connectionManager.connect(context, query);
-                publishProgress(context);
+                Cursor cursor = favouriteCursor = connectionManager.getFavouriteBooks();
+                publishProgress(cursor);
                 return true;
-            }catch (SQLiteException ex){
+            } catch (SQLiteException ex) {
                 ex.printStackTrace();
                 return false;
             }
         }
 
-        protected void onProgressUpdate(Context... contexts){
-            Context context = contexts[0];
-            CursorAdapter favouriteAdapter = new SimpleCursorAdapter(context, R.layout.activity_list_entry, favouriteCursor,
-                    new String[]{"COVER_RESOURCE_ID","AUTHOR", "TITLE"}, new int[]{R.id.pic, R.id.author_entry, R.id.title_entry}, 0);
+        protected void onProgressUpdate(Cursor... cursors) {
+            Cursor cursor = cursors[0];
+            CursorAdapter favouriteAdapter = new SimpleCursorAdapter(getApplicationContext(), R.layout.activity_list_entry, cursor,
+                    new String[]{"COVER_RESOURCE_ID", "AUTHOR", "TITLE"}, new int[]{R.id.pic, R.id.author_entry, R.id.title_entry}, 0);
             setListAdapter(favouriteAdapter);
         }
 
-        protected void onPostExecute(Boolean success){
-            if(!success){
+        protected void onPostExecute(Boolean success) {
+            if (!success) {
                 connectionManager.showPrompt(FavouriteListActivity.this);
             }
         }
@@ -77,10 +74,10 @@ public class FavouriteListActivity extends ListActivity {
         });
     }
 
-     @Override
-    public void onDestroy(){
-         super.onDestroy();
-         connectionManager.close();
-     }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        connectionManager.close();
+    }
 
 }

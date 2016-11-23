@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 public class Book {
     @SerializedName("author")
     private String author;
-    @SerializedName("titles")
+    @SerializedName("title")
     private String title;
     @SerializedName("coverResourceId")
     private int coverResourceId;
