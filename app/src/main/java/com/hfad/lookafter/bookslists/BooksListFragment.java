@@ -19,7 +19,6 @@ import android.widget.SimpleCursorAdapter;
 
 import com.hfad.lookafter.R;
 import com.hfad.lookafter.activities.ContentActivity;
-import com.hfad.lookafter.activities.FavouriteListActivity;
 import com.hfad.lookafter.database.ConnectionManager;
 
 public class BooksListFragment extends ListFragment {

@@ -2,13 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
-<ScrollView
-    android:id="@+id/scrollView"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:layout_margin="6dp">
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_margin="6dp">
 
         <RelativeLayout
             android:id="@+id/activity_books"
@@ -19,34 +19,34 @@
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingTop="@dimen/activity_vertical_margin">
 
-                <ImageView
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:id="@+id/pic"
-                    android:scaleType="center"
-                    android:paddingLeft="40dp"
-                    android:layout_gravity="center">
-                </ImageView>
+            <ImageView
+                android:id="@+id/pic"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:scaleType="center" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/pic"
-                    android:gravity="center"
-                    android:paddingTop="20dp"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:id="@+id/title"
-                    android:textColor="#000000"/>
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/pic"
+                android:gravity="center"
+                android:paddingTop="20dp"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#000000" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:layout_below="@+id/title"
-                    android:paddingTop="20dp"
-                    android:paddingStart="5dp"
-                    android:id="@+id/content"
-                    android:textColor="#000000"/>
-    </RelativeLayout>
-</ScrollView>
+            <TextView
+                android:id="@+id/content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/title"
+                android:layout_margin="24dp"
+                android:paddingStart="5dp"
+                android:paddingTop="20dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#000000" />
+
+        </RelativeLayout>
+    </ScrollView>
 </LinearLayout>

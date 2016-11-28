@@ -10,10 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.hfad.lookafter.activities.ContentActivity;
+import com.hfad.lookafter.database.ConnectionManager;
 
 
 public class TopFragment extends Fragment {
@@ -21,7 +21,7 @@ public class TopFragment extends Fragment {
     private Cursor favouriteCursor;
     private ConnectionManager connectionManager = new ConnectionManager();
     private RecyclerView bookRecycler;
-    private int[] bookCovers;
+    private String[] bookCovers;
     private ImagesAdapter imagesAdapter;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -35,11 +35,7 @@ public class TopFragment extends Fragment {
         GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 2);
         bookRecycler.setLayoutManager(layoutManager);
 
-//        if (bookCovers.length == 0) {
-//            TextView notice = new TextView(getActivity());
-//            notice.setText(R.string.empty_library);
-//            View.inflate().addView(notice);
-//        }
+        //TODO: wyswietlanie info o braku ksiazkach w ulubionych
 
         return bookRecycler;
     }
@@ -61,8 +57,8 @@ public class TopFragment extends Fragment {
         setAdapter();
     }
 
-    private int[] generateCoversArray() {
-        bookCovers = new int[favouriteCursor.getCount()];
+    private String[] generateCoversArray() {
+        bookCovers = new String[favouriteCursor.getCount()];
         for (int i = 0; i < favouriteCursor.getCount(); i++) {
             bookCovers[i] = getCoverId();
         }
@@ -78,7 +74,7 @@ public class TopFragment extends Fragment {
     }
 
     private void setAdapter() {
-        imagesAdapter = new ImagesAdapter(bookCovers);
+        imagesAdapter = new ImagesAdapter(bookCovers, getActivity());
         bookRecycler.setAdapter(imagesAdapter);
         imagesAdapter.setListener(new ImagesAdapter.Listener() {
             @Override
@@ -91,13 +87,13 @@ public class TopFragment extends Fragment {
         });
     }
 
-    private int getCoverId() {
-        int coverId = 0;
+    private String getCoverId() {
+        String coverId = null;
         while (favouriteCursor.moveToNext()) {
-            coverId = favouriteCursor.getInt(1);
+            coverId = favouriteCursor.getString(1);
             return coverId;
         }
-        return 0;
+        return null;
     }
 
     public long getItemId(int position) {

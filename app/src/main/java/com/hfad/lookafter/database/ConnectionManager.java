@@ -8,7 +8,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
 
-import com.hfad.lookafter.DatabaseHelper;
 import com.hfad.lookafter.R;
 
 public class ConnectionManager {
