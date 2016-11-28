@@ -1,4 +1,4 @@
-package com.hfad.lookafter.activities;
+package com.hfad.lookafter.bookslists;
 
 import android.app.ListActivity;
 import android.content.Intent;
@@ -12,7 +12,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.hfad.lookafter.ConnectionManager;
+import com.hfad.lookafter.activities.ContentActivity;
+import com.hfad.lookafter.database.ConnectionManager;
 import com.hfad.lookafter.R;
 
 

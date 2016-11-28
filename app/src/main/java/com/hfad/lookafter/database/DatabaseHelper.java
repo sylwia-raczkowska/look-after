@@ -1,4 +1,4 @@
-package com.hfad.lookafter;
+package com.hfad.lookafter.database;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.hfad.lookafter.Book;
+import com.hfad.lookafter.R;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -35,20 +37,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE BOOKS (_id INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + "AUTHOR TEXT, "
                 + "TITLE TEXT, "
-                + "COVER_RESOURCE_ID INTEGER, "
-                + "CONTENT_RESOURCE_ID INTEGER, "
+                + "COVER_RESOURCE_ID TEXT, "
+                + "CONTENT_RESOURCE_ID TEXT, "
                 + "FAVOURITE INTEGER);");
 
         List<Book> books = deserialize();
-        // TODO: sciezki do plikow w jsonie
-        Integer[] images = {R.drawable.na_straganie, R.drawable.kopciuszek, R.drawable.lokomotywa, R.drawable.ptasie_radio, R.drawable.spozniony_slowik, R.drawable.deszcz_majowy,
-                R.drawable.taniec, R.drawable.abecadlo, R.drawable.idzie_niebo, R.drawable.czerwony_kapturek, R.drawable.krolewna_sniezka, R.drawable.swiniopas, R.drawable.dziewczynka_z_zapalkami};
-        Integer[] texts = {R.raw.na_straganie, R.raw.kopciuszek, R.raw.lokomotywa, R.raw.ptasie_radio, R.raw.spozniony_slowik, R.raw.deszcz_majowy,
-                R.raw.taniec, R.raw.abecadlo, R.raw.idzie_niebo, R.raw.czerwony_kapturek, R.raw.krolewna_sniezka, R.raw.swiniopas, R.raw.dziewczynka_z_zapalkami};
 
         for (int i = 0; i < books.size(); i++) {
             Book book = books.get(i);
-            insertBook(db, book.getAuthor(), book.getTitle(), images[i], texts[i]);
+            insertBook(db, book.getAuthor(), book.getTitle(), book.getCoverResourcePath(), book.getContentResourcePath());
         }
     }
 
@@ -57,7 +54,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    private static void insertBook(SQLiteDatabase db, String author, String title, int coverResourceId, int contentResourceId) {
+    private static void insertBook(SQLiteDatabase db, String author, String title, String coverResourceId, String contentResourceId) {
         ContentValues bookValues = new ContentValues();
         bookValues.put("AUTHOR", author);
         bookValues.put("TITLE", title);

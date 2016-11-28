@@ -1,4 +1,4 @@
-package com.hfad.lookafter;
+package com.hfad.lookafter.bookslists;
 
 import android.app.ListFragment;
 import android.content.Context;
@@ -17,8 +17,10 @@ import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
+import com.hfad.lookafter.R;
 import com.hfad.lookafter.activities.ContentActivity;
 import com.hfad.lookafter.activities.FavouriteListActivity;
+import com.hfad.lookafter.database.ConnectionManager;
 
 public class BooksListFragment extends ListFragment {
 
