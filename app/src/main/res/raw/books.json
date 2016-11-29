@@ -1,80 +1,80 @@
 [
   {
     "author": "Julian Tuwim",
-    "title": "Na straganie",
-    "coverResourceId": 0,
-    "contentResourceId": 0
+    "title": "\"Na straganie\"",
+    "coverResourceId": "img/na_straganie.jpg",
+    "contentResourceId": "txt/na_straganie.txt"
   },
   {
     "author": "Bracia Grimm",
-    "title": "Kopciuszek",
-    "coverResourceId": 0,
-    "contentResourceId": 0
+    "title": "\"Kopciuszek\"",
+    "coverResourceId": "img/kopciuszek.jpg",
+    "contentResourceId": "txt/kopciuszek.txt"
   },
   {
     "author": "Julian Tuwim",
-    "title": "Lokomotywa",
-    "coverResourceId": 0,
-    "contentResourceId": 0
+    "title": "\"Lokomotywa\"",
+    "coverResourceId": "img/lokomotywa.jpg",
+    "contentResourceId": "txt/lokomotywa.txt"
   },
   {
     "author": "Julian Tuwim",
-    "title": "Ptasie Radio",
-    "coverResourceId": 0,
-    "contentResourceId": 0
+    "title": "\"Ptasie Radio\"",
+    "coverResourceId": "img/ptasie_radio.jpg",
+    "contentResourceId": "txt/ptasie_radio.txt"
   },
   {
     "author": "Julian Tuwim",
-    "title": "Spoźniony słowik",
-    "coverResourceId": 0,
-    "contentResourceId": 0
+    "title": "\"Spoźniony słowik\"",
+    "coverResourceId": "img/spozniony_slowik.jpg",
+    "contentResourceId": "txt/spozniony_slowik.txt"
   },
   {
     "author": "Leopold Staff",
-    "title": "Deszcz Majowy",
-    "coverResourceId": 0,
-    "contentResourceId": 0
+    "title": "\"Deszcz Majowy\"",
+    "coverResourceId": "img/deszcz_majowy.jpg",
+    "contentResourceId": "txt/deszcz_majowy.txt"
   },
   {
     "author": "Julian Tuwim",
-    "title": "Taniec",
-    "coverResourceId": 0,
-    "contentResourceId": 0
+    "title": "\"Taniec\"",
+    "coverResourceId": "img/taniec.jpg",
+    "contentResourceId": "txt/taniec.txt"
   },
   {
     "author": "Julian Tuwim",
-    "title": "Abecadło",
-    "coverResourceId": 0,
-    "contentResourceId": 0
+    "title": "\"Abecadło\"",
+    "coverResourceId": "img/abecadlo.jpg",
+    "contentResourceId": "txt/abecadlo.txt"
   },
   {
     "author": "Ewa Zarębina",
-    "title": "Idzie niebo ciemną nocą",
-    "coverResourceId": 0,
-    "contentResourceId": 0
+    "title": "\"Idzie niebo ciemną nocą\"",
+    "coverResourceId": "img/idzie_niebo.jpg",
+    "contentResourceId": "txt/idzie_niebo.txt"
   },
   {
     "author": "Bracia Grimm",
-    "title": "Czerwony Kapturek",
-    "coverResourceId": 0,
-    "contentResourceId": 0
+    "title": "\"Czerwony Kapturek\"",
+    "coverResourceId": "img/czerwony_kapturek.jpg",
+    "contentResourceId": "txt/czerwony_kapturek.txt"
   },
   {
     "author": "Bracia Grimm",
-    "title": "Królewna Śnieżka",
-    "coverResourceId": 0,
-    "contentResourceId": 0
+    "title": "\"Królewna Śnieżka\"",
+    "coverResourceId": "img/krolewna_sniezka.jpg",
+    "contentResourceId": "txt/krolewna_sniezka.txt"
   },
   {
     "author": "H. C. Andersen",
-    "title": "Świniopas",
-    "coverResourceId": 0,
-    "contentResourceId": 0
+    "title": "\"Świniopas\"",
+    "coverResourceId": "img/swiniopas.jpg",
+    "contentResourceId": "txt/swiniopas.txt"
   },
   {
     "author": "H. C. Andersen",
-    "title": "Dziewczynka z zapałkami",
-    "coverResourceId": 0,
-    "contentResourceId": 0
+    "title": "\"Dziewczynka z zapałkami\"",
+    "coverResourceId": "img/dziewczynka_z_zapalkami.jpg",
+    "contentResourceId": "txt/dziewczynka_z_zapalkami.txt"
   }
 ]

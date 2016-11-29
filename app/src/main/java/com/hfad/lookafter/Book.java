@@ -9,15 +9,15 @@ public class Book {
     @SerializedName("title")
     private String title;
     @SerializedName("coverResourceId")
-    private int coverResourceId;
+    private String coverResourcePath;
     @SerializedName("contentResourceId")
-    private int contentResourceId;
+    private String contentResourcePath;
 
-    public Book(String author, String title, int coverResourceId, int content, boolean isFavourite) {
+    public Book (String author, String title, String coverResourceId, String content, boolean isFavourite){
         this.author = author;
         this.title = title;
-        this.coverResourceId = coverResourceId;
-        this.contentResourceId = content;
+        this.coverResourcePath = coverResourceId;
+        this.contentResourcePath = content;
         this.isFavourite = isFavourite;
     }
 
@@ -43,12 +43,12 @@ public class Book {
         this.title = title;
     }
 
-    public int getCoverResourceId() {
-        return coverResourceId;
+    public String getCoverResourcePath() {
+        return coverResourcePath;
     }
 
-    public int getContentResourceId() {
-        return contentResourceId;
+    public String getContentResourcePath() {
+        return contentResourcePath;
     }
 }
 

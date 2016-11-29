@@ -6,9 +6,10 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.os.Handler;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,24 +17,23 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.hfad.lookafter.BooksListFragment;
 import com.hfad.lookafter.R;
 import com.hfad.lookafter.TopFragment;
-import com.hfad.lookafter.Utils;
+import com.hfad.lookafter.bookslists.BooksListFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends Activity {
+
     private String[] options;
     private ActionBarDrawerToggle actionBarDrawerToggle;
+    private boolean isBackFirstPressed = true;
 
     @BindView(R.id.drawer)
     ListView drawerList;
     @BindView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
-
-    private boolean isBackFirstPressed = true;
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
 
@@ -42,6 +42,8 @@ public class MainActivity extends Activity {
             selectItem(position);
         }
     }
+
+    ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,7 +101,8 @@ public class MainActivity extends Activity {
     }
 
     private void selectItem(int position) {
-        Fragment fragment;
+        Fragment fragment = null;
+
         switch (position) {
             case 1:
                 fragment = new BooksListFragment();
@@ -108,13 +111,20 @@ public class MainActivity extends Activity {
                 fragment = new TopFragment();
         }
 
+        replaceFragment(fragment);
+        setActionBarTitle(position);
+        drawerLayout.closeDrawer(drawerList);
+    }
+
+    private void replaceFragment(Fragment fragment) {
         FragmentTransaction ft = getFragmentManager()
                 .beginTransaction().
                         replace(R.id.fragment_container, fragment)
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        if ((fragment.toString().indexOf("TopFragment")) == -1)
+            ft.addToBackStack(fragment.getClass().getName());
+        Log.d("tostring", String.valueOf(fragment.getClass()));
         ft.commit();
-        setActionBarTitle(position);
-        drawerLayout.closeDrawer(drawerList);
     }
 
     private void setActionBarTitle(int position) {
@@ -127,18 +137,23 @@ public class MainActivity extends Activity {
         getActionBar().setTitle(title);
     }
 
-    @Override
-    public void onBackPressed() {
-        if (isBackFirstPressed) {
-            isBackFirstPressed = false;
-            Utils.showSnackbar(findViewById(android.R.id.content), R.string.press_to_exit, this);
+    private Fragment getCurrentFragment() {
+        Fragment currentFragment = this.getFragmentManager().findFragmentById(R.id.fragment_container);
+        return currentFragment;
+    }
 
-            (new Handler(this.getMainLooper())).postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    isBackFirstPressed = true;
-                }
-            }, 2000);
+    // TODO: backstack
+
+    public void onBackPressed() {
+
+        if (getCurrentFragment() instanceof TopFragment) {
+            if (isBackFirstPressed) {
+                isBackFirstPressed = false;
+                Snackbar.make(findViewById(R.id.drawer), R.string.press_to_exit, Snackbar.LENGTH_LONG)
+                        .show();
+            } else {
+                super.onBackPressed();
+            }
         } else {
             super.onBackPressed();
         }

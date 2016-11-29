@@ -1,21 +1,27 @@
 package com.hfad.lookafter.activities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
+import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.hfad.lookafter.Book;
-import com.hfad.lookafter.ConnectionManager;
+import com.hfad.lookafter.FavouriteManager;
 import com.hfad.lookafter.R;
+import com.hfad.lookafter.database.ConnectionManager;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -33,6 +39,12 @@ public class ContentActivity extends Activity {
     private int bookNo;
     private Menu menu;
     private ConnectionManager connectionManager = new ConnectionManager();
+    private AssetManager assetManager;
+    private FavouriteManager favouriteManager;
+    private ContentValues bookValues;
+    private AlertDialog alert;
+
+    //TODO: View pager
 
     @BindView(R.id.pic)
     ImageView image;
@@ -46,6 +58,7 @@ public class ContentActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_books);
 
+        assetManager = getAssets();
         ButterKnife.bind(this);
 
         bookNo = (Integer) getIntent().getExtras().get(EXTRA_BOOKN0);
@@ -62,28 +75,36 @@ public class ContentActivity extends Activity {
         return true;
     }
 
-    private void createBook(String author, String title, int cover_id, int content, boolean isFavourite) {
+    private void createBook(String author, String title, String cover_id, String content, boolean isFavourite) {
         book = new Book(author, title, cover_id, content, isFavourite);
         displayData();
     }
 
     private void displayData() {
-        image.setImageResource(book.getCoverResourceId());
+        showImage();
         title.setText(book.getAuthor() + ' ' + book.getTitle());
+    }
+
+    public void showImage() {
+        try {
+            InputStream is = assetManager.open(book.getCoverResourcePath());
+            Bitmap bitmap = BitmapFactory.decodeStream(is);
+            image.setImageBitmap(bitmap);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void readContentFromFile() {
         BufferedReader reader = null;
         try {
-            InputStream inputStream = getResources().openRawResource(book.getContentResourceId());
-            reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+            reader = new BufferedReader(new InputStreamReader(getAssets().open(book.getContentResourcePath())));
 
             String line = null;
             while ((line = reader.readLine()) != null) {
                 content.append(line);
                 content.append("\n");
             }
-            displayData();
         } catch (IOException e) {
             Log.e("IOException", "readingContentFromFile()");
         } finally {
@@ -114,6 +135,7 @@ public class ContentActivity extends Activity {
 
         @Override
         protected void onProgressUpdate(Void... params) {
+
             readDataFromCursor();
         }
 
@@ -129,8 +151,8 @@ public class ContentActivity extends Activity {
 
             String author = cursor.getString(0);
             String title = cursor.getString(1);
-            int cover_id = cursor.getInt(2);
-            int content = cursor.getInt(3);
+            String cover_id = cursor.getString(2);
+            String content = cursor.getString(3);
             boolean isFavourite = (cursor.getInt(4) == 1);
 
             createBook(author, title, cover_id, content, isFavourite);
@@ -146,7 +168,7 @@ public class ContentActivity extends Activity {
                 return true;
 
             case R.id.action_settings:
-                //Todo: settings action
+                //TODO: przypomnienia
                 return true;
 
             default:
@@ -155,17 +177,18 @@ public class ContentActivity extends Activity {
     }
 
     public void onFavouriteClicked() {
-        int bookNo = (Integer) getIntent().getExtras().get("bookNo");
-        new UpdateBookTask().execute(bookNo);
+        bookNo = (Integer) getIntent().getExtras().get("bookNo");
+        if (book.isFavourite()) displayDialog();
+        else new UpdateBookTask().execute(bookNo);
     }
 
     private class UpdateBookTask extends AsyncTask<Integer, Void, Boolean> {
 
-        ContentValues bookValues;
-
         @Override
         protected void onPreExecute() {
-            onFavouriteClick();
+            Boolean isFavourite = book.isFavourite();
+            favouriteManager = new FavouriteManager(getApplicationContext(), book, isFavourite);
+            bookValues = favouriteManager.setFavourite();
         }
 
         @Override
@@ -184,16 +207,31 @@ public class ContentActivity extends Activity {
                 connectionManager.showPrompt(ContentActivity.this);
             }
         }
+    }
 
-        private void onFavouriteClick() {
-            Boolean isFavourite = book.isFavourite();
+    private void displayDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
 
-            showMessage(isFavourite);
+        builder.setMessage("Usunąć książkę z ulubionych?");
 
-            bookValues = new ContentValues();
-            bookValues.put("FAVOURITE", !isFavourite);
-            book.setFavourite(!isFavourite);
-        }
+        builder.setPositiveButton("Usuń", new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int which) {
+                new UpdateBookTask().execute(bookNo);
+            }
+        });
+
+        builder.setNegativeButton("Anuluj", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Do nothing
+                dialog.dismiss();
+            }
+        });
+        alert = builder.create();
+        alert.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+        alert.show();
     }
 
     @Override
@@ -207,22 +245,6 @@ public class ContentActivity extends Activity {
             }
         }
         return super.onPrepareOptionsMenu(menu);
-    }
-
-    private void showMessage(boolean isFavourite) {
-        int message;
-        if (isFavourite) {
-            message = R.string.action_favourite_deleted;
-        } else {
-            message = R.string.action_favourite_added;
-        }
-        Toast toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
-        toast.show();
-    }
-
-    public void onDestroy() {
-        super.onDestroy();
-        connectionManager.close();
     }
 }
 
