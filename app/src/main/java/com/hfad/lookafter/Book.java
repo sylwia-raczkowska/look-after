@@ -13,7 +13,7 @@ public class Book {
     @SerializedName("contentResourceId")
     private String contentResourcePath;
 
-    public Book (String author, String title, String coverResourceId, String content, boolean isFavourite){
+    public Book(String author, String title, String coverResourceId, String content, boolean isFavourite) {
         this.author = author;
         this.title = title;
         this.coverResourcePath = coverResourceId;
@@ -49,6 +49,10 @@ public class Book {
 
     public String getContentResourcePath() {
         return contentResourcePath;
+    }
+
+    private int privateMethod() {
+        return 5;
     }
 }
 
