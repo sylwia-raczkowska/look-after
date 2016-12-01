@@ -7,8 +7,6 @@ import android.content.DialogInterface;
 import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,11 +23,12 @@ import com.hfad.lookafter.database.ConnectionManager;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.hfad.lookafter.BitmapImagesSetter.showImage;
 
 public class ContentActivity extends Activity {
 
@@ -37,12 +36,9 @@ public class ContentActivity extends Activity {
     private Cursor cursor;
     private Book book;
     private int bookNo;
-    private Menu menu;
     private ConnectionManager connectionManager = new ConnectionManager();
-    private AssetManager assetManager;
-    private FavouriteManager favouriteManager;
     private ContentValues bookValues;
-    private AlertDialog alert;
+    private AssetManager assetManager;
 
     //TODO: View pager
 
@@ -69,7 +65,6 @@ public class ContentActivity extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        this.menu = menu;
         getMenuInflater().inflate(R.menu.menu_books, menu);
         invalidateOptionsMenu();
         return true;
@@ -81,18 +76,8 @@ public class ContentActivity extends Activity {
     }
 
     private void displayData() {
-        showImage();
+        showImage(assetManager, book, image);
         title.setText(book.getAuthor() + ' ' + book.getTitle());
-    }
-
-    public void showImage() {
-        try {
-            InputStream is = assetManager.open(book.getCoverResourcePath());
-            Bitmap bitmap = BitmapFactory.decodeStream(is);
-            image.setImageBitmap(bitmap);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     private void readContentFromFile() {
@@ -187,7 +172,7 @@ public class ContentActivity extends Activity {
         @Override
         protected void onPreExecute() {
             Boolean isFavourite = book.isFavourite();
-            favouriteManager = new FavouriteManager(getApplicationContext(), book, isFavourite);
+            FavouriteManager favouriteManager = new FavouriteManager(getApplicationContext(), book, isFavourite);
             bookValues = favouriteManager.setFavourite();
         }
 
@@ -229,7 +214,7 @@ public class ContentActivity extends Activity {
                 dialog.dismiss();
             }
         });
-        alert = builder.create();
+        AlertDialog alert = builder.create();
         alert.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         alert.show();
     }

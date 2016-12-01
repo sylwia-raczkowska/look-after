@@ -20,6 +20,7 @@ import android.widget.ListView;
 import com.hfad.lookafter.R;
 import com.hfad.lookafter.TopFragment;
 import com.hfad.lookafter.bookslists.BooksListFragment;
+import com.hfad.lookafter.notifications.NotificationActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -142,7 +143,6 @@ public class MainActivity extends Activity {
         return currentFragment;
     }
 
-    // TODO: backstack
 
     public void onBackPressed() {
 

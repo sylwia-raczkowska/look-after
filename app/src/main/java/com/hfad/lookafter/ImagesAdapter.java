@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -22,8 +21,8 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ViewHolder
     private Context context;
     private AssetManager assetManager;
 
-    public static interface Listener {
-        public void onClick(int position);
+    public interface Listener {
+       void onClick(int position);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
