@@ -85,7 +85,7 @@ public class NotificationActivity extends Activity {
     @OnClick(R.id.notification_button)
     public void onNotificationButtonClick() {
 
-        Snackbar.make(findViewById(R.id.notification_button), "Przypomnienie ustalone", Snackbar.LENGTH_SHORT)
+        Snackbar.make(findViewById(R.id.notification_button), R.string.notification_added, Snackbar.LENGTH_SHORT)
                 .setCallback(new Snackbar.Callback() {
                     @Override
                     public void onDismissed(Snackbar snackbar, int event) {

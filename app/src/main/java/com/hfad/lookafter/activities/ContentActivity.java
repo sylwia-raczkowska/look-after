@@ -28,7 +28,7 @@ import java.io.InputStreamReader;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.hfad.lookafter.BitmapImagesSetter.showImage;
+import static com.hfad.lookafter.BitmapImagesSetter.setImage;
 
 public class ContentActivity extends Activity {
 
@@ -76,7 +76,7 @@ public class ContentActivity extends Activity {
     }
 
     private void displayData() {
-        showImage(assetManager, book, image);
+        setImage(getApplicationContext(), book.getCoverResourcePath(), image);
         title.setText(book.getAuthor() + ' ' + book.getTitle());
     }
 

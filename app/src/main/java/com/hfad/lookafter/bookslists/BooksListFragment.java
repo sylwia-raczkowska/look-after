@@ -13,9 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CursorAdapter;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 
 import com.hfad.lookafter.R;
 import com.hfad.lookafter.activities.ContentActivity;
@@ -42,7 +40,7 @@ public class BooksListFragment extends ListFragment {
 
         private Context context;
 
-        public ListGenerator(Context context){
+        public ListGenerator(Context context) {
             this.context = context;
         }
 
@@ -60,10 +58,10 @@ public class BooksListFragment extends ListFragment {
 
         @Override
         protected void onProgressUpdate(Cursor... cursors) {
-           Cursor cursor = cursors[0];
-            CursorAdapter adapter = new SimpleCursorAdapter(context, R.layout.activity_list_entry,
-                    cursor, new String[]{"COVER_RESOURCE_ID", "AUTHOR", "TITLE"}, new int[]{R.id.pic, R.id.author_entry, R.id.title_entry}, 0);
-            setListAdapter(adapter);
+            Cursor cursor = cursors[0];
+            com.hfad.lookafter.adapters.CursorAdapter customAdapter = new com.hfad.lookafter.adapters.CursorAdapter(
+                    context, cursor, 0);
+            setListAdapter(customAdapter);
         }
 
         @Override

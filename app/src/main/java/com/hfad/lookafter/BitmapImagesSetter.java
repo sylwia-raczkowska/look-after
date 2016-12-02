@@ -1,5 +1,6 @@
 package com.hfad.lookafter;
 
+import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,10 +16,12 @@ import java.io.InputStream;
  */
 
 public class BitmapImagesSetter {
+    private static AssetManager assetManager;
 
-    public static void showImage(AssetManager assetManager, Book book, ImageView image) {
+    public static void setImage(Context context, String path, ImageView image) {
+        assetManager = context.getAssets();
         try {
-            InputStream is = assetManager.open(book.getCoverResourcePath());
+            InputStream is = assetManager.open(path);
             Bitmap bitmap = BitmapFactory.decodeStream(is);
             image.setImageBitmap(bitmap);
         } catch (IOException e) {

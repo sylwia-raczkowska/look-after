@@ -6,15 +6,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.widget.CursorAdapter;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.hfad.lookafter.R;
 import com.hfad.lookafter.activities.ContentActivity;
 import com.hfad.lookafter.database.ConnectionManager;
-import com.hfad.lookafter.R;
 
 
 public class FavouriteListActivity extends ListActivity {
@@ -52,9 +50,9 @@ public class FavouriteListActivity extends ListActivity {
 
         protected void onProgressUpdate(Cursor... cursors) {
             Cursor cursor = cursors[0];
-            CursorAdapter favouriteAdapter = new SimpleCursorAdapter(getApplicationContext(), R.layout.activity_list_entry, cursor,
-                    new String[]{"COVER_RESOURCE_ID", "AUTHOR", "TITLE"}, new int[]{R.id.pic, R.id.author_entry, R.id.title_entry}, 0);
-            setListAdapter(favouriteAdapter);
+            com.hfad.lookafter.adapters.CursorAdapter customAdapter = new com.hfad.lookafter.adapters.CursorAdapter(
+                    getApplicationContext(), cursor, 0);
+            setListAdapter(customAdapter);
         }
 
         protected void onPostExecute(Boolean success) {
