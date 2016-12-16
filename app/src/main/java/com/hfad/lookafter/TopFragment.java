@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.hfad.lookafter.activities.ContentActivity;
+import com.hfad.lookafter.content.ContentActivity;
 import com.hfad.lookafter.adapters.ImagesAdapter;
 import com.hfad.lookafter.database.ConnectionManager;
 
