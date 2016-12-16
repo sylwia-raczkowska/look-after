@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.hfad.lookafter.R;
-import com.hfad.lookafter.activities.ContentActivity;
+import com.hfad.lookafter.content.ContentActivity;
 import com.hfad.lookafter.database.ConnectionManager;
 
 public class BooksListFragment extends ListFragment {

@@ -20,7 +20,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.ContentActivity"
+            android:name=".content.ContentActivity"
             android:label="@string/title_activity_books_activity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

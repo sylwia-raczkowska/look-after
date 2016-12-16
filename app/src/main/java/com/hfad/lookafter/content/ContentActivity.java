@@ -1,6 +1,5 @@
-package com.hfad.lookafter.activities;
+package com.hfad.lookafter.content;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
@@ -9,15 +8,17 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.ViewPager;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.hfad.lookafter.Book;
 import com.hfad.lookafter.FavouriteManager;
+import com.hfad.lookafter.PageSplitter;
 import com.hfad.lookafter.R;
 import com.hfad.lookafter.database.ConnectionManager;
 
@@ -28,9 +29,7 @@ import java.io.InputStreamReader;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.hfad.lookafter.BitmapImagesSetter.setImage;
-
-public class ContentActivity extends Activity {
+public class ContentActivity extends FragmentActivity {
 
     public static final String EXTRA_BOOKN0 = "bookNo";
     private Cursor cursor;
@@ -39,15 +38,14 @@ public class ContentActivity extends Activity {
     private ConnectionManager connectionManager = new ConnectionManager();
     private ContentValues bookValues;
     private AssetManager assetManager;
+    private int height;
+    private int width;
+    private PageSplitter pageSplitter;
 
     //TODO: View pager
 
-    @BindView(R.id.pic)
-    ImageView image;
-    @BindView(R.id.title)
-    TextView title;
-    @BindView(R.id.content)
-    TextView content;
+    @BindView(R.id.view_pager)
+    ViewPager viewPager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,12 +53,16 @@ public class ContentActivity extends Activity {
         setContentView(R.layout.activity_books);
 
         assetManager = getAssets();
+
         ButterKnife.bind(this);
+
+        getDimensions();
+        pageSplitter = new PageSplitter(width, height, 10, 1);
 
         bookNo = (Integer) getIntent().getExtras().get(EXTRA_BOOKN0);
         new BookData().execute(bookNo);
-
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -72,12 +74,20 @@ public class ContentActivity extends Activity {
 
     private void createBook(String author, String title, String cover_id, String content, boolean isFavourite) {
         book = new Book(author, title, cover_id, content, isFavourite);
-        displayData();
+        readContentFromFile();
+        viewPager.setAdapter(new PagerAdapter(getSupportFragmentManager(), pageSplitter.getPages()));
     }
 
-    private void displayData() {
-        setImage(getApplicationContext(), book.getCoverResourcePath(), image);
-        title.setText(book.getAuthor() + ' ' + book.getTitle());
+//    private void displayData() {
+//        setImage(getApplicationContext(), book.getCoverResourcePath(), image);
+//        title.setText(book.getAuthor() + ' ' + book.getTitle());
+//    }
+
+    private void getDimensions() {
+        DisplayMetrics displaymetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+        this.height = displaymetrics.heightPixels;
+        this.width = displaymetrics.widthPixels;
     }
 
     private void readContentFromFile() {
@@ -85,11 +95,12 @@ public class ContentActivity extends Activity {
         try {
             reader = new BufferedReader(new InputStreamReader(getAssets().open(book.getContentResourcePath())));
 
+            StringBuilder content = new StringBuilder();
             String line = null;
             while ((line = reader.readLine()) != null) {
                 content.append(line);
-                content.append("\n");
             }
+            pageSplitter.append(content);
         } catch (IOException e) {
             Log.e("IOException", "readingContentFromFile()");
         } finally {
@@ -141,7 +152,7 @@ public class ContentActivity extends Activity {
             boolean isFavourite = (cursor.getInt(4) == 1);
 
             createBook(author, title, cover_id, content, isFavourite);
-            readContentFromFile();
+
         }
     }
 
@@ -202,6 +213,7 @@ public class ContentActivity extends Activity {
         builder.setPositiveButton("Usuń", new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int which) {
+
                 new UpdateBookTask().execute(bookNo);
             }
         });
