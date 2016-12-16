@@ -43,7 +43,6 @@ public class ContentActivity extends FragmentActivity {
     private PageSplitter pageSplitter;
     private PagerAdapter adapter;
 
-    //TODO: View pager
 
     @BindView(R.id.view_pager)
     ViewPager viewPager;
@@ -80,7 +79,13 @@ public class ContentActivity extends FragmentActivity {
         adapter.setPages(pageSplitter.getPages());
         viewPager.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+
     }
+
+//    private void displayData() {
+//        setImage(getApplicationContext(), book.getCoverResourcePath(), image);
+//        title.setText(book.getAuthor() + ' ' + book.getTitle());
+//    }
 
     private void getDimensions() {
         DisplayMetrics displaymetrics = new DisplayMetrics();

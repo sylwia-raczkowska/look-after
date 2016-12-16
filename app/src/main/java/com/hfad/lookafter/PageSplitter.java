@@ -57,6 +57,4 @@ public class PageSplitter {
     public List<CharSequence> getPages() {
         return pages;
     }
-
-
 }
