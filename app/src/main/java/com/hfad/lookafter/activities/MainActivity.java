@@ -63,6 +63,12 @@ public class MainActivity extends Activity {
 
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
+
+        //SharedPreferences pref = getSharedPreferences("look-after", 0);
+
+        //setTheme(R.style.AppTheme2);
+
+
     }
 
     @Override

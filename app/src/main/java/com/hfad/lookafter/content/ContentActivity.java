@@ -10,6 +10,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.text.TextPaint;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
@@ -76,6 +77,7 @@ public class ContentActivity extends FragmentActivity {
     private void createBook(String author, String title, String cover_id, String content, boolean isFavourite) {
         book = new Book(author, title, cover_id, content, isFavourite);
         readContentFromFile();
+        pageSplitter.split(new TextPaint());
         adapter.setPages(pageSplitter.getPages());
         viewPager.setAdapter(adapter);
         adapter.notifyDataSetChanged();

@@ -1,10 +1,24 @@
- <resources>
+<resources>
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="android:Theme.Holo.Light">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:buttonStyle">@style/app_button</item>
+        <!--<item name="android:windowBackground"></item>-->
+    </style>
+
+    <style name="app_button" parent="@android:style/Widget.Button">
+        <item name="android:background">@drawable/button_selector</item>
+        <item name="android:padding">10dp</item>
+    </style>
+
+    <style name="AppTheme2" parent="android:Theme.Holo.Light">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <!--<item name="android:windowBackground"></item>-->
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -16,6 +30,6 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-     <style name="CustomTheme" parent="Theme.AppCompat.Light.NoActionBar" />
+    <style name="CustomTheme" parent="Theme.AppCompat.Light.NoActionBar" />
 
- </resources>
+</resources>
