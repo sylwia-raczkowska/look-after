@@ -1,4 +1,4 @@
-package com.hfad.lookafter;
+package com.hfad.lookafter.content;
 
 import android.text.Layout;
 import android.text.SpannableStringBuilder;
@@ -24,13 +24,15 @@ public class PageSplitter {
     }
 
     public void append(CharSequence charSequence) {
+
         spannableStringBuilder.append(charSequence);
+        split();
     }
 
-    public void split(TextPaint textPaint) {
+    public void split() {
         StaticLayout staticLayout = new StaticLayout(
                 spannableStringBuilder,
-                textPaint,
+                new TextPaint(),
                 pageWidth,
                 Layout.Alignment.ALIGN_NORMAL,
                 lineSpacingMultiplier,

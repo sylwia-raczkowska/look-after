@@ -18,7 +18,6 @@ import android.view.WindowManager;
 
 import com.hfad.lookafter.Book;
 import com.hfad.lookafter.FavouriteManager;
-import com.hfad.lookafter.PageSplitter;
 import com.hfad.lookafter.R;
 import com.hfad.lookafter.database.ConnectionManager;
 
