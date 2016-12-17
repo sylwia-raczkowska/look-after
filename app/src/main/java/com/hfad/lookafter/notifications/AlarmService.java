@@ -36,11 +36,11 @@ public class AlarmService extends Service {
                 .setContentText("Czas na czytanki!")
                 .setSmallIcon(android.R.drawable.ic_dialog_info)
                 .setContentIntent(pendingIntent)
-                .setAutoCancel(true)
                 .build();
         notification.flags |= Notification.FLAG_AUTO_CANCEL;
 
         notificationManager.notify(0, notification);
+        stopSelf();
     }
 
     @Override

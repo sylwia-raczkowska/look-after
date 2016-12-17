@@ -26,9 +26,17 @@ public class BooksListFragment extends ListFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = super.onCreateView(inflater, container, savedInstanceState);
+
+        // do tej pory korzystalas z domyslnej implementacji ListFragment, a teraz ladujemy tu
+        // customowy layout - zastanow sie czy nie lepiej z tego zrobic normalny fragment
+        // tak jak jest teraz jest troche niebezpiecznie, bo implementacja ListFragment odwoluje sie
+        // np do id wewnetrznych widokow (listView w customowym layoucie musi miec takie samo id jak to domyslne)
+
+        View view = inflater.inflate(R.layout.books_list_fragment,
+                container, false); /*super.onCreateView(inflater, container, savedInstanceState);*/
         setHasOptionsMenu(true);
         generateList();
+
         return view;
     }
 
@@ -59,8 +67,10 @@ public class BooksListFragment extends ListFragment {
         @Override
         protected void onProgressUpdate(Cursor... cursors) {
             Cursor cursor = cursors[0];
+
             com.hfad.lookafter.adapters.CursorAdapter customAdapter = new com.hfad.lookafter.adapters.CursorAdapter(
                     context, cursor, 0);
+
             setListAdapter(customAdapter);
         }
 

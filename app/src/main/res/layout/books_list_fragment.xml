@@ -3,13 +3,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v7.widget.RecyclerView
+    <EditText
+        android:id="@+id/search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="wyszukaj" />
 
-        android:id="@+id/recycler_view"
+    <!--    <AutoCompleteTextView
+            android:id="@+id/search2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/search"
+            android:hint="wyszukaj" />-->
+
+    <ListView
+        android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/search"
         android:scrollbars="horizontal">
 
-    </android.support.v7.widget.RecyclerView>
+    </ListView>
 
- </RelativeLayout>
+</RelativeLayout>
