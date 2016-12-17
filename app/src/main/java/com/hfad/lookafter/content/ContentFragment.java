@@ -38,7 +38,7 @@ public class ContentFragment extends Fragment {
 
         Bundle arg = getArguments();
         if (arg != null) {
-            position = arg.getInt("positon");
+            position = arg.getInt("position");
         }
 
         LinearLayout mainLayout = (LinearLayout) inflater.inflate(R.layout.content_fragment, container, false);

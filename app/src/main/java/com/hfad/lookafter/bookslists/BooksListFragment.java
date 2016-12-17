@@ -1,6 +1,6 @@
 package com.hfad.lookafter.bookslists;
 
-import android.app.ListFragment;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -13,22 +13,42 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.hfad.lookafter.R;
 import com.hfad.lookafter.content.ContentActivity;
 import com.hfad.lookafter.database.ConnectionManager;
 
-public class BooksListFragment extends ListFragment {
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+public class BooksListFragment extends Fragment {
+
+    @BindView(R.id.list)
+    ListView booksList;
 
     private ConnectionManager connectionManager = new ConnectionManager();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = super.onCreateView(inflater, container, savedInstanceState);
+
+        View view = inflater.inflate(R.layout.books_list_fragment,
+                container, false);
+        ButterKnife.bind(this, view);
         setHasOptionsMenu(true);
         generateList();
+
+        booksList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getActivity(), ContentActivity.class);
+                intent.putExtra(ContentActivity.EXTRA_BOOKN0, (int) id);
+                startActivity(intent);
+            }
+        });
+
         return view;
     }
 
@@ -59,9 +79,11 @@ public class BooksListFragment extends ListFragment {
         @Override
         protected void onProgressUpdate(Cursor... cursors) {
             Cursor cursor = cursors[0];
-            com.hfad.lookafter.adapters.CursorAdapter customAdapter = new com.hfad.lookafter.adapters.CursorAdapter(
+
+            com.hfad.lookafter.adapters.CursorAdapter adapter = new com.hfad.lookafter.adapters.CursorAdapter(
                     context, cursor, 0);
-            setListAdapter(customAdapter);
+
+            booksList.setAdapter(adapter);
         }
 
         @Override
@@ -70,13 +92,6 @@ public class BooksListFragment extends ListFragment {
                 connectionManager.showPrompt(getActivity());
             }
         }
-    }
-
-    @Override
-    public void onListItemClick(ListView listView, View itemView, int position, long id) {
-        Intent intent = new Intent(getActivity(), ContentActivity.class);
-        intent.putExtra(ContentActivity.EXTRA_BOOKN0, (int) id);
-        startActivity(intent);
     }
 
     @Override
