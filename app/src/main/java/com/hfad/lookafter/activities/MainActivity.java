@@ -4,12 +4,12 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.hfad.lookafter.R;
+import com.hfad.lookafter.settings.SettingsActivity;
 import com.hfad.lookafter.TopFragment;
 import com.hfad.lookafter.bookslists.BooksListFragment;
 import com.hfad.lookafter.notifications.NotificationActivity;
@@ -64,7 +65,8 @@ public class MainActivity extends Activity {
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
 
-        //SharedPreferences pref = getSharedPreferences("look-after", 0);
+        SharedPreferences pref = getSharedPreferences(getString(R.string.look_after), 0);
+        String styles = pref.getString(String.valueOf(R.string.style_preference), "1");
 
         //setTheme(R.style.AppTheme2);
 
@@ -100,7 +102,8 @@ public class MainActivity extends Activity {
                 startActivity(intent);
                 return true;
             case R.id.action_settings:
-                //TODO: ustawienia
+                Intent settingsIntent = new Intent(this, SettingsActivity.class);
+                startActivity(settingsIntent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -130,7 +133,6 @@ public class MainActivity extends Activity {
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         if ((fragment.toString().indexOf("TopFragment")) == -1)
             ft.addToBackStack(fragment.getClass().getName());
-        Log.d("tostring", String.valueOf(fragment.getClass()));
         ft.commit();
     }
 

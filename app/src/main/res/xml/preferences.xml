@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory android:title="Kategoria">
+    <PreferenceCategory android:title="@string/style">
 
-        <CheckBoxPreference
-            android:key="checkbox_preference"
-            android:summary="opis ustawienia"
-            android:title="Nazwa ustawienia" />
+        <ListPreference
+            android:defaultValue="1"
+            android:entries="@array/listArray"
+            android:entryValues="@array/listValues"
+            android:key="@string/style_preference"
+            android:title="@string/choose_style" />
 
     </PreferenceCategory>
 

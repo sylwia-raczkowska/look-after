@@ -2,18 +2,13 @@ package com.hfad.lookafter.adapters;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.hfad.lookafter.Book;
 import com.hfad.lookafter.R;
-import com.hfad.lookafter.activities.MainActivity;
-
-import butterknife.ButterKnife;
 
 import static com.hfad.lookafter.BitmapImagesSetter.setImage;
 
@@ -37,7 +32,7 @@ public class CursorAdapter extends android.widget.CursorAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        ImageView imageView = (ImageView)  view.findViewById(R.id.pic);
+        ImageView imageView = (ImageView) view.findViewById(R.id.pic);
         TextView textViewAuhor = (TextView) view.findViewById(R.id.author_entry);
         TextView textViewTitle = (TextView) view.findViewById(R.id.title_entry);
 

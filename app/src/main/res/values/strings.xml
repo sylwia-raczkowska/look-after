@@ -23,7 +23,19 @@
     <string name="empty_library">Twoja biblioteka jest pusta. Dodaj do niej swoje ulubione książki!</string>
     <string name="notification_button">Ustal przypomnienie</string>
     <string name="notification_added">Przypomnienie ustalone</string>
+    <string name="pager_position">position</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="choose_style">Wybierz motyw</string>
+    <string name="style">Wygląd</string>
+    <string name="look_after">look-after</string>
+    <string name="style_preference">style_preference</string>
+    <string-array name="listArray">
+        <item>Motyw jasny</item>
+        <item>Motyw ciemny</item>
+    </string-array>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="listValues">
+        <item>R.style.LightTheme</item>
+        <item>R.style.DarkTheme</item>
+    </string-array>
 </resources>

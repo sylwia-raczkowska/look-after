@@ -41,7 +41,6 @@ public class NotificationActivity extends Activity {
 
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-        //TODO: przypomnienia
 
         ButterKnife.bind(this);
 

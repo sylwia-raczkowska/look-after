@@ -10,7 +10,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
-import android.text.TextPaint;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
@@ -76,16 +75,17 @@ public class ContentActivity extends FragmentActivity {
     private void createBook(String author, String title, String cover_id, String content, boolean isFavourite) {
         book = new Book(author, title, cover_id, content, isFavourite);
         readContentFromFile();
-        adapter.setPages(pageSplitter.getPages());
-        viewPager.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+        initializeAdapter();
 
     }
 
-//    private void displayData() {
-//        setImage(getApplicationContext(), book.getCoverResourcePath(), image);
-//        title.setText(book.getAuthor() + ' ' + book.getTitle());
-//    }
+    private void initializeAdapter() {
+        adapter.setPages(pageSplitter.getPages());
+        adapter.setImagePath(book.getCoverResourcePath());
+        adapter.setTitle(book.getTitle());
+        viewPager.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+    }
 
     private void getDimensions() {
         DisplayMetrics displaymetrics = new DisplayMetrics();
@@ -103,6 +103,7 @@ public class ContentActivity extends FragmentActivity {
             String line = null;
             while ((line = reader.readLine()) != null) {
                 content.append(line);
+                content.append("\n");
             }
             pageSplitter.append(content);
         } catch (IOException e) {
@@ -168,7 +169,7 @@ public class ContentActivity extends FragmentActivity {
                 return true;
 
             case R.id.action_settings:
-                //TODO: przypomnienia
+
                 return true;
 
             default:

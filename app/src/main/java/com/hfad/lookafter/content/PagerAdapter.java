@@ -5,7 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.hfad.lookafter.ContentFragment;
+import com.hfad.lookafter.R;
 
 import java.util.List;
 
@@ -25,20 +25,35 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
         this.pages = pages;
     }
 
+    String title;
+    String imagePath;
+
     @Override
     public Fragment getItem(int position) {
         ContentFragment contentFragment = new ContentFragment();
 
         Bundle arg = new Bundle();
-        arg.putInt("positon", position);
+        arg.putInt(String.valueOf(R.string.pager_position), position);
         contentFragment.setArguments(arg);
 
+        contentFragment.setImagePath(imagePath);
+        contentFragment.setTitle(title);
         contentFragment.setBookContent(pages.get(position));
+
         return contentFragment;
     }
 
     @Override
     public int getCount() {
         return pages.size();
+    }
+
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 }

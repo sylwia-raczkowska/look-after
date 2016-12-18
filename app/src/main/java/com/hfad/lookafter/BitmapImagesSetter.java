@@ -22,6 +22,7 @@ import java.util.List;
 public class BitmapImagesSetter {
     private static AssetManager assetManager;
 
+
     public static void setImage(Context context, String path, ImageView image) {
         assetManager = context.getAssets();
         try {
