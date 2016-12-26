@@ -28,11 +28,6 @@ public class NotificationActivity extends Activity {
     DatePicker datePicker;
 
     private Calendar calendar;
-    private int year;
-    private int month;
-    private int dayOfMonth;
-    private int hourOfDay;
-    private int minute;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
