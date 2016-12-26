@@ -29,7 +29,7 @@ public class ConnectionManager {
         return database;
     }
 
-    public void uploadData(ContentValues bookValues, int bookNo){
+    public void uploadData(ContentValues bookValues, int bookNo) {
         database = databaseHelper.getWritableDatabase();
         database.update("BOOKS", bookValues, "_id = ?", new String[]{Integer.toString(bookNo)});
     }
@@ -50,6 +50,12 @@ public class ConnectionManager {
         String query = "SELECT _id, COVER_RESOURCE_ID, AUTHOR, TITLE FROM BOOKS WHERE FAVOURITE = 1";
 
         return getDatabaseInstance().rawQuery(query, null);
+    }
+
+    public Cursor getBooks(CharSequence sequence) {
+        String query = "SELECT _id, COVER_RESOURCE_ID, AUTHOR, TITLE FROM BOOKS WHERE TITLE LIKE ? OR AUTHOR LIKE ?";
+        String criterion = '%' + String.valueOf(sequence) + '%';
+        return getDatabaseInstance().rawQuery(query, new String[]{criterion, criterion});
     }
 
     public void showPrompt(Activity activity) {

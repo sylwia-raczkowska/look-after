@@ -1,12 +1,9 @@
+
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="android:Theme.Holo.Light">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:buttonStyle">@style/app_button</item>
-        <!--<item name="android:windowBackground"></item>-->
+    <style name="LightTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimaryDark</item>
     </style>
 
     <style name="app_button" parent="@android:style/Widget.Button">
@@ -14,22 +11,11 @@
         <item name="android:padding">10dp</item>
     </style>
 
-    <style name="AppTheme2" parent="android:Theme.Holo.Light">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <!--<item name="android:windowBackground"></item>-->
-    </style>
-
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
-    <style name="CustomTheme" parent="Theme.AppCompat.Light.NoActionBar" />
+    <style name="DarkTheme" parent="Theme.AppCompat.NoActionBar" />
 
 </resources>

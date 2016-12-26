@@ -7,6 +7,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import com.hfad.lookafter.R;
@@ -27,6 +30,8 @@ public class BooksListFragment extends Fragment {
 
     @BindView(R.id.list)
     ListView booksList;
+    @BindView(R.id.search)
+    EditText search;
 
     private ConnectionManager connectionManager = new ConnectionManager();
 
@@ -38,7 +43,7 @@ public class BooksListFragment extends Fragment {
                 container, false);
         ButterKnife.bind(this, view);
         setHasOptionsMenu(true);
-        generateList();
+        generateList("");
 
         booksList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -49,14 +54,30 @@ public class BooksListFragment extends Fragment {
             }
         });
 
+        search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                generateList(s);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
         return view;
     }
 
-    private void generateList() {
-        new ListGenerator(getActivity()).execute();
+    private void generateList(CharSequence s) {
+        new ListGenerator(getActivity()).execute(s);
     }
 
-    private class ListGenerator extends AsyncTask<Void, Cursor, Boolean> {
+    private class ListGenerator extends AsyncTask<CharSequence, Cursor, Boolean> {
 
         private Context context;
 
@@ -65,9 +86,10 @@ public class BooksListFragment extends Fragment {
         }
 
         @Override
-        protected Boolean doInBackground(Void... params) {
+        protected Boolean doInBackground(CharSequence... sequences) {
+            CharSequence sequence = sequences[0];
             try {
-                Cursor cursor = connectionManager.getAllBooks();
+                Cursor cursor = connectionManager.getBooks(sequence);
                 publishProgress(cursor);
                 return true;
             } catch (SQLiteException ex) {
