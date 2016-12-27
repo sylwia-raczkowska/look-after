@@ -37,12 +37,6 @@ public class ContentFragment extends Fragment {
 
     }
 
-   /* public ContentFragment getInstance(int position){
-        ContentFragment fragment = new ContentFragment();
-        fragment.position = position;
-    }*/
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -61,13 +55,13 @@ public class ContentFragment extends Fragment {
             setImage(getContext(), imagePath, image);
 
         } else {
+
             titleView.setVisibility(View.GONE);
             image.setVisibility(View.GONE);
+            if (bookContent != null)
+                content.setText(bookContent);
 
         }
-
-        if (bookContent != null)
-            content.setText(bookContent);
 
         return mainLayout;
     }

@@ -24,7 +24,7 @@ public class PageSplitter {
     }
 
     public void append(CharSequence charSequence) {
-
+        pages.add("zero");
         spannableStringBuilder.append(charSequence);
         split();
     }

@@ -1,10 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.RecyclerView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/book_recycler"
-    android:scrollbars="horizontal"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/fab_margin">
+    android:orientation="vertical">
 
-</android.support.v7.widget.RecyclerView>
+
+    <ImageView
+        android:id="@+id/start_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/start_image" />
+
+    <TextView
+        android:id="@+id/no_favourite_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/empty_library"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:visibility="invisible"
+        android:layout_centerInParent="true"
+        android:paddingStart="@dimen/padding_start"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/book_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/fab_margin"
+        android:scrollbars="horizontal">
+
+    </android.support.v7.widget.RecyclerView>
+</RelativeLayout>

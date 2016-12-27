@@ -5,4 +5,5 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="text_margin">16dp</dimen>
     <dimen name="padding_start">10dp</dimen>
+    <dimen name="margin_bottom">30dp</dimen>
 </resources>

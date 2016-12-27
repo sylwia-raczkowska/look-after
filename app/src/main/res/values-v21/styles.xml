@@ -1,22 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppTheme" parent="android:Theme.Holo.Light">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:buttonStyle">@style/app_button</item>
-        <item name="android:colorPrimary">@color/colorPrimaryDark</item>
-        <item name="android:colorPrimaryDark">@color/holo_light_primary_dark</item>
-        <item name="android:colorForeground">@color/bright_foreground_holo_light</item>
-        <item name="android:navigationBarColor">@color/holo_light_primary_dark</item>
-        <item name="android:statusBarColor">@color/holo_light_primary_dark</item>
-        <item name="android:textColorPrimary">@color/colorPrimary</item>
-        <item name="android:textColorSecondary">@color/colorPrimary</item>
-        <!--<item name="android:windowBackground"></item>-->
-    </style>
-
-    <style name="LightTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="LightTheme" parent="android:Theme.Holo.Light">
         <item name="colorPrimary">@color/colorPrimaryDark</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -28,5 +13,23 @@
         <!--<item name="android:windowBackground"></item>-->
     </style>
 
-    <style name="DarkTheme" parent="android:Theme.Material" />
+    <style name="DarkTheme" parent="android:Theme.Holo.Light">
+        <item name="android:colorPrimary">@color/colorAccent</item>
+        <item name="android:colorBackground">@color/background_holo_light</item>
+        <item name="android:colorPrimaryDark">@color/holo_light_primary_dark</item>
+        <item name="android:navigationBarColor">@color/holo_light_primary_dark</item>
+        <item name="android:colorForeground">@color/bright_foreground_holo_light</item>
+        <item name="android:statusBarColor">@color/colorAccent</item>
+        <item name="android:textColorPrimary">@color/background_holo_light</item>
+    </style>
+
+    <style name="LightTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
 </resources>
