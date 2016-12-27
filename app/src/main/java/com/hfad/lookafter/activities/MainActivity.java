@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -18,10 +19,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.hfad.lookafter.R;
-import com.hfad.lookafter.settings.SettingsActivity;
 import com.hfad.lookafter.TopFragment;
 import com.hfad.lookafter.bookslists.BooksListFragment;
 import com.hfad.lookafter.notifications.NotificationActivity;
+import com.hfad.lookafter.settings.SettingsActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,11 +46,22 @@ public class MainActivity extends Activity {
         }
     }
 
-    ;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        String theme = sharedPref.getString(String.valueOf(R.string.style_preference), "DarkTheme");
+        switch (theme) {
+            case "LightTheme":
+                setTheme(R.style.LightTheme);
+                break;
+            case "DarkTheme":
+                setTheme(R.style.DarkTheme);
+                break;
+            default:
+                setTheme(R.style.LightTheme);
+        }
+
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
@@ -64,13 +76,6 @@ public class MainActivity extends Activity {
 
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
-
-        SharedPreferences pref = getSharedPreferences(getString(R.string.look_after), 0);
-        String styles = pref.getString(String.valueOf(R.string.style_preference), "1");
-
-        //setTheme(R.style.AppTheme2);
-
-
     }
 
     @Override
