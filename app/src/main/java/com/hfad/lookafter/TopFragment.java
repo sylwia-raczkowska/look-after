@@ -9,36 +9,48 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.hfad.lookafter.content.ContentActivity;
 import com.hfad.lookafter.adapters.ImagesAdapter;
+import com.hfad.lookafter.content.ContentActivity;
 import com.hfad.lookafter.database.ConnectionManager;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 
 public class TopFragment extends Fragment {
 
+    @BindView(R.id.start_image)
+    ImageView startImage;
+    @BindView(R.id.book_recycler)
+    RecyclerView bookRecycler;
+    @BindView(R.id.no_favourite_text)
+    TextView noFavouriteText;
+
     private Cursor favouriteCursor;
     private ConnectionManager connectionManager = new ConnectionManager();
-    private RecyclerView bookRecycler;
     private String[] bookCovers;
     private ImagesAdapter imagesAdapter;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        bookRecycler = (RecyclerView) inflater.inflate(R.layout.fragment_top, container, false);
-
-        connectionManager.setDatabaseContext(inflater.getContext());
-        updateFavouriteList();
+        View view = inflater.inflate(R.layout.fragment_top, container, false);
+        ButterKnife.bind(this, view);
 
         GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 2);
         bookRecycler.setLayoutManager(layoutManager);
 
+        connectionManager.setDatabaseContext(inflater.getContext());
+        updateFavouriteList();
+
+        startImage.setVisibility(View.INVISIBLE);
+
         //TODO: wyswietlanie info o braku ksiazkach w ulubionych
 
-        return bookRecycler;
+        return view;
     }
 
     @Override
@@ -53,8 +65,8 @@ public class TopFragment extends Fragment {
 
     private void updateFavouriteList() {
         favouriteCursor = connectionManager.getFavouriteBooks();
+        if (favouriteCursor.getCount() == 0) showNotice();
         bookCovers = generateCoversArray();
-        if (bookCovers.length == 0) showNotice();
         setAdapter();
     }
 
@@ -66,12 +78,8 @@ public class TopFragment extends Fragment {
         return bookCovers;
     }
 
-    private void showNotice(){
-        LinearLayout linearLayout = new LinearLayout(getActivity());
-        LayoutInflater inflater = (LayoutInflater)getActivity().getSystemService(getActivity().LAYOUT_INFLATER_SERVICE);
-        TextView notice = new TextView(getActivity());
-        notice.setText(R.string.empty_library);
-        linearLayout.addView(notice);
+    private void showNotice() {
+        noFavouriteText.setVisibility(View.VISIBLE);
     }
 
     private void setAdapter() {
