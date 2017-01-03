@@ -4,22 +4,15 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-
-    <ImageView
-        android:id="@+id/start_image"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/start_image" />
-
     <TextView
         android:id="@+id/no_favourite_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:paddingStart="@dimen/padding_start"
         android:text="@string/empty_library"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:visibility="invisible"
-        android:layout_centerInParent="true"
-        android:paddingStart="@dimen/padding_start"/>
+        android:visibility="invisible" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/book_recycler"
