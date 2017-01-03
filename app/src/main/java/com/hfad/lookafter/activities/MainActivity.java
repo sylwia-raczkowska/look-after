@@ -20,6 +20,7 @@ import android.widget.ListView;
 
 import com.hfad.lookafter.R;
 import com.hfad.lookafter.TopFragment;
+import com.hfad.lookafter.Utils;
 import com.hfad.lookafter.bookslists.BooksListFragment;
 import com.hfad.lookafter.notifications.NotificationActivity;
 import com.hfad.lookafter.settings.SettingsActivity;
@@ -48,21 +49,23 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+        Utils.onActivityCreateSetTheme(this);
+        setContentView(R.layout.activity_main);
+
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        String theme = sharedPref.getString(String.valueOf(R.string.style_preference), "DarkTheme");
+
+        String theme = sharedPref.getString(getString(R.string.style_preference), "DarkTheme");
         switch (theme) {
             case "LightTheme":
-                setTheme(R.style.LightTheme);
+                Utils.changeToTheme(this, Utils.LIGHT_THEME);
                 break;
             case "DarkTheme":
-                setTheme(R.style.DarkTheme);
+                Utils.changeToTheme(this, Utils.DARK_THEME);
                 break;
-            default:
-                setTheme(R.style.LightTheme);
         }
 
-        setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
         options = getResources().getStringArray(R.array.options);

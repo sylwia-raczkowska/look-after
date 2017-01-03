@@ -22,8 +22,6 @@ import butterknife.ButterKnife;
 
 public class TopFragment extends Fragment {
 
-    @BindView(R.id.start_image)
-    ImageView startImage;
     @BindView(R.id.book_recycler)
     RecyclerView bookRecycler;
     @BindView(R.id.no_favourite_text)
@@ -45,10 +43,6 @@ public class TopFragment extends Fragment {
 
         connectionManager.setDatabaseContext(inflater.getContext());
         updateFavouriteList();
-
-        startImage.setVisibility(View.INVISIBLE);
-
-        //TODO: wyswietlanie info o braku ksiazkach w ulubionych
 
         return view;
     }
