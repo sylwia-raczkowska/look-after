@@ -14,7 +14,7 @@ import com.hfad.lookafter.R;
 import com.hfad.lookafter.content.ContentActivity;
 import com.hfad.lookafter.database.ConnectionManager;
 
-
+// tu problem- List Activity nie ma wsparcia dla AppCompat; trzeba rozwazyc modyfikacje
 public class FavouriteListActivity extends ListActivity {
 
     private Cursor favouriteCursor;

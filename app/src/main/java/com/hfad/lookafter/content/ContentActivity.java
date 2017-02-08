@@ -8,17 +8,19 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
 
+import com.hfad.lookafter.AppTheme;
 import com.hfad.lookafter.Book;
 import com.hfad.lookafter.FavouriteManager;
 import com.hfad.lookafter.R;
+import com.hfad.lookafter.Utils;
 import com.hfad.lookafter.database.ConnectionManager;
 
 import java.io.BufferedReader;
@@ -28,7 +30,7 @@ import java.io.InputStreamReader;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ContentActivity extends FragmentActivity {
+public class ContentActivity extends AppCompatActivity {
 
     public static final String EXTRA_BOOKN0 = "bookNo";
     private Cursor cursor;
@@ -49,6 +51,8 @@ public class ContentActivity extends FragmentActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setActivityTheme();
         setContentView(R.layout.activity_books);
 
         assetManager = getAssets();
@@ -63,6 +67,19 @@ public class ContentActivity extends FragmentActivity {
         new BookData().execute(bookNo);
     }
 
+    private void setActivityTheme() {
+        AppTheme theme = Utils.getApplicationTheme(this);
+        switch (theme) {
+            case LightTheme:
+                setTheme(R.style.LightTheme);
+                break;
+            case DarkTheme:
+                setTheme(R.style.DarkTheme);
+                break;
+            default:
+                setTheme(R.style.LightTheme);
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

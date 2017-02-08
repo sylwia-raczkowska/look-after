@@ -1,6 +1,8 @@
 package com.hfad.lookafter;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.widget.Toast;
@@ -18,5 +20,12 @@ public class Utils {
                 Toast.makeText(context, "tekst", Toast.LENGTH_SHORT).show();
             }
         }).show();
+    }
+
+    public static AppTheme getApplicationTheme(Context context) {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        String theme = sharedPref.getString(context.getString(R.string.style_preference), "DarkTheme");
+
+        return AppTheme.valueOf(theme);
     }
 }

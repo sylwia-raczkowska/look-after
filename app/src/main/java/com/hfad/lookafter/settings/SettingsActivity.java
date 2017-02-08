@@ -11,7 +11,7 @@ import com.hfad.lookafter.R;
 
 public class SettingsActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
-    private static final String STYLE_KEY = String.valueOf(R.string.style_preference);
+    private static final String STYLE_KEY = "style_preference";  // to raczej powinna byc stala, a nie napis odczytywany z resourceow   //String.valueOf(R.string.style_preference);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,11 +23,11 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-//
-//    if (key.equals(STYLE_KEY)){
-//        Preference stylePref = findPreference(key);
-//        stylePref.setSummary(sharedPreferences.getString(key))
-//    }
+
+        if (key.equals(STYLE_KEY)) {
+            Preference stylePref = findPreference(key);
+            stylePref.setSummary(sharedPreferences.getString(key, ""));
+        }
     }
 
     public class LookAfterPreferenceFragment extends PreferenceFragment {

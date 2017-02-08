@@ -1,17 +1,19 @@
 package com.hfad.lookafter.notifications;
 
-import android.app.ActionBar;
-import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 
+import com.hfad.lookafter.AppTheme;
 import com.hfad.lookafter.R;
+import com.hfad.lookafter.Utils;
 
 import java.util.Calendar;
 
@@ -20,7 +22,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class NotificationActivity extends Activity {
+public class NotificationActivity extends AppCompatActivity {
 
     @BindView(R.id.timePicker)
     TimePicker timePicker;
@@ -32,15 +34,30 @@ public class NotificationActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setActivityTheme();
         setContentView(R.layout.activity_notification);
 
-        ActionBar actionBar = getActionBar();
+        ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         ButterKnife.bind(this);
 
         initializeCalendar();
+    }
 
+    private void setActivityTheme() {
+        AppTheme theme = Utils.getApplicationTheme(this);
+        switch (theme) {
+            case LightTheme:
+                setTheme(R.style.LightTheme);
+                break;
+            case DarkTheme:
+                setTheme(R.style.DarkTheme);
+                break;
+            default:
+                setTheme(R.style.LightTheme);
+        }
     }
 
     private void initializeCalendar() {
