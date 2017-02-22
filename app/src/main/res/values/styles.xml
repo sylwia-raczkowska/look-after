@@ -1,6 +1,6 @@
 <resources>
 
-    <style name="LightTheme" parent="android:Theme.Holo.Light">
+    <style name="LightTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorPrimaryDark</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -10,7 +10,7 @@
         <!--<item name="android:windowBackground"></item>-->
     </style>
 
-    <style name="DarkTheme" parent="android:Theme.Holo.Light">
+    <style name="DarkTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:colorBackground">@color/background_holo_light</item>
         <item name="android:colorForeground">@color/bright_foreground_holo_light</item>
         <item name="android:textColorPrimary">@color/background_holo_light</item>
