@@ -50,11 +50,28 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+
 
         setActivityTheme();
 
+        Utils.onActivityCreateSetTheme(this);
         setContentView(R.layout.activity_main);
+
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+
+        String theme = sharedPref.getString(getString(R.string.style_preference), "DarkTheme");
+        switch (theme) {
+            case "LightTheme":
+                Utils.changeToTheme(this, Utils.LIGHT_THEME);
+                break;
+            case "DarkTheme":
+                Utils.changeToTheme(this, Utils.DARK_THEME);
+                break;
+        }
+
+
         ButterKnife.bind(this);
 
         options = getResources().getStringArray(R.array.options);
